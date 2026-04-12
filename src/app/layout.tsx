@@ -10,7 +10,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 export const metadata: Metadata = createMetadata({
   title: "AI Interview",
-  description: "AI voice interviews, open source and self-hosted.",
+  description: "Open-source AI voice interview platform — paste a job description, send candidates a link, and get back a full scorecard automatically.",
   icons: { icon: "/browser-client-icon.ico" },
   ...(process.env.NEXT_PUBLIC_MARKETING_ENABLED &&
     process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && {
