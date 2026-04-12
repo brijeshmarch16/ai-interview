@@ -1,6 +1,6 @@
 # AI Interview &middot; [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub Repo Views](https://gitviews.com/repo/brijeshmarch16/ai-interview.svg?label=views&style=flat&label-color=%23555&color=%234c1)
 
-AI voice interviews, open source and self-hosted.
+Open-source AI voice interview platform — paste a job description, send candidates a link, and get back a full scorecard automatically.
 
 ![AI Interview product demo](public/screenshot.png)
 
