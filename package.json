@@ -2,7 +2,7 @@
   "name": "ai-interview",
   "description": "Open-source AI voice interview platform. Paste a job description, send candidates a link, and get back a full scorecard automatically.",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
