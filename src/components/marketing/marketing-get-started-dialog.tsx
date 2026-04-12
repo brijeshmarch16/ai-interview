@@ -85,7 +85,9 @@ export function MarketingGetStartedDialog({
       <DialogContent className="sm:max-w-xl md:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Get Started</DialogTitle>
-          <DialogDescription>Set up AI Interview locally or deploy to production.</DialogDescription>
+          <DialogDescription>
+            Set up AI Interview locally or deploy to production.
+          </DialogDescription>
         </DialogHeader>
         <Tabs defaultValue={GET_STARTED_TABS[0]?.id ?? "run-locally"} className="overflow-hidden">
           <TabsList>

@@ -6,11 +6,15 @@ import { Toaster } from "@/components/ui/sonner";
 import { createMetadata } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 import "./globals.css";
+import { Inter } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
+
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = createMetadata({
   title: "AI Interview",
-  description: "Open-source AI voice interview platform. Paste a job description, send candidates a link, and get back a full scorecard automatically.",
+  description:
+    "Open-source AI voice interview platform. Paste a job description, send candidates a link, and get back a full scorecard automatically.",
   icons: { icon: "/browser-client-icon.ico" },
   ...(process.env.NEXT_PUBLIC_MARKETING_ENABLED &&
     process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && {
@@ -22,7 +26,7 @@ export const metadata: Metadata = createMetadata({
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans", inter.variable)}>
       <body className={cn(GeistSans.className, "min-h-screen antialiased")}>
         <Providers>
           <TooltipProvider>

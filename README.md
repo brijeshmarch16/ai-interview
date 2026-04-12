@@ -15,11 +15,12 @@ Open-source AI voice interview platform. Paste a job description, send candidate
 
 ## Tech Stack
 
-- Next.js 16 (App Router)
+- Next.js
+- Typescript
+- Tailwind CSS + shadcn/ui
 - Better Auth
-- Drizzle ORM + PostgreSQL
+- Drizzle ORM + PostgreSQL/Neon
 - Retell AI + OpenAI + LangChain
-- shadcn/ui + Tailwind CSS
 
 ## Contributing
 
