@@ -154,7 +154,6 @@ export default function Call({ interview }: InterviewProps) {
       if (data?.image) setInterviewerImg(data.image)
     }
     fetchInterviewer()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [interview.interviewerId])
 
   const startConversation = async (candidateEmail: string, name: string) => {

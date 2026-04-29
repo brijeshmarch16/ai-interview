@@ -22,7 +22,7 @@ const depthLevels = [
 export default function InterviewQuestionCard(
   props: InterviewQuestionCardProps
 ) {
-  const { questionNumber, questionData, index, onDelete } = props
+  const { questionNumber, index, onDelete } = props
   const { control } = useFormContext<FormValues>()
 
   return (
