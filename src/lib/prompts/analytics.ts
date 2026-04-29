@@ -1,9 +1,9 @@
 export const SYSTEM_PROMPT =
-  "You are an expert in analyzing interview transcripts. You must only use the main questions provided and not generate or infer additional questions.";
+  "You are an expert in analyzing interview transcripts. You must only use the main questions provided and not generate or infer additional questions."
 
 export const getInterviewAnalyticsPrompt = (
   interviewTranscript: string,
-  mainInterviewQuestions: string,
+  mainInterviewQuestions: string
 ) => `Analyse the following interview transcript and provide structured feedback:
 
 ###
@@ -59,4 +59,4 @@ Ensure the output is in valid JSON format with the following structure:
   "softSkillSummary: string
 }
 
-IMPORTANT: Only use the main questions provided. Do not generate or infer additional questions such as follow-up questions.`;
+IMPORTANT: Only use the main questions provided. Do not generate or infer additional questions such as follow-up questions.`

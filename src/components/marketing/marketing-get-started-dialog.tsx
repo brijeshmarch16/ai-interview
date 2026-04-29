@@ -1,8 +1,8 @@
-"use client";
+"use client"
 
-import { Rocket, Server, Terminal } from "lucide-react";
-import type * as React from "react";
-import { Fragment } from "react";
+import { Rocket, Server, Terminal } from "lucide-react"
+import type * as React from "react"
+import { Fragment } from "react"
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 import {
   Table,
   TableBody,
@@ -18,27 +18,32 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GET_STARTED_TABS, type GetStartedInlinePart } from "@/lib/get-started-content";
+} from "@/components/ui/table"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  GET_STARTED_TABS,
+  type GetStartedInlinePart,
+} from "@/lib/get-started-content"
 
 function InlineCode({ children }: { children: React.ReactNode }) {
   return (
-    <code className="break-all rounded bg-muted px-1.5 py-0.5 font-mono text-sm">{children}</code>
-  );
+    <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm break-all">
+      {children}
+    </code>
+  )
 }
 
 function StepHeading({ children }: { children: React.ReactNode }) {
-  return <h4 className="font-semibold text-lg">{children}</h4>;
+  return <h4 className="text-lg font-semibold">{children}</h4>
 }
 
 function renderInlinePart(part: GetStartedInlinePart, index: number) {
   if (part.type === "text") {
-    return <Fragment key={index}>{part.value}</Fragment>;
+    return <Fragment key={index}>{part.value}</Fragment>
   }
 
   if (part.type === "inlineCode") {
-    return <InlineCode key={index}>{part.value}</InlineCode>;
+    return <InlineCode key={index}>{part.value}</InlineCode>
   }
 
   if (part.type === "link") {
@@ -52,25 +57,25 @@ function renderInlinePart(part: GetStartedInlinePart, index: number) {
       >
         {part.label}
       </a>
-    );
+    )
   }
 
-  return <strong key={index}>{part.value}</strong>;
+  return <strong key={index}>{part.value}</strong>
 }
 
 function renderInlineParts(parts: GetStartedInlinePart[]) {
-  return parts.map((part, index) => renderInlinePart(part, index));
+  return parts.map((part, index) => renderInlinePart(part, index))
 }
 
 const ICON_BY_TYPE = {
   terminal: Terminal,
   rocket: Rocket,
   server: Server,
-} as const;
+} as const
 
 interface MarketingGetStartedDialogProps {
-  children: React.ReactNode;
-  triggerAriaLabel?: string;
+  children: React.ReactNode
+  triggerAriaLabel?: string
 }
 
 export function MarketingGetStartedDialog({
@@ -89,17 +94,20 @@ export function MarketingGetStartedDialog({
             Set up AI Interview locally or deploy to production.
           </DialogDescription>
         </DialogHeader>
-        <Tabs defaultValue={GET_STARTED_TABS[0]?.id ?? "run-locally"} className="overflow-hidden">
+        <Tabs
+          defaultValue={GET_STARTED_TABS[0]?.id ?? "run-locally"}
+          className="overflow-hidden"
+        >
           <TabsList>
             {GET_STARTED_TABS.map((tab) => {
-              const Icon = ICON_BY_TYPE[tab.icon];
+              const Icon = ICON_BY_TYPE[tab.icon]
 
               return (
                 <TabsTrigger key={tab.id} value={tab.id}>
                   <Icon className="mr-1.5 size-3.5" />
                   {tab.label}
                 </TabsTrigger>
-              );
+              )
             })}
           </TabsList>
 
@@ -124,16 +132,19 @@ export function MarketingGetStartedDialog({
                         >
                           <code>{block.code}</code>
                         </pre>
-                      );
+                      )
                     }
 
                     if (block.type === "paragraph") {
                       return (
                         // biome-ignore lint/suspicious/noArrayIndexKey: This is a static array that won't change, so using the index as a key is acceptable here.
-                        <p className="text-base text-muted-foreground leading-relaxed" key={index}>
+                        <p
+                          className="text-base leading-relaxed text-muted-foreground"
+                          key={index}
+                        >
                           {renderInlineParts(block.parts)}
                         </p>
-                      );
+                      )
                     }
 
                     return (
@@ -158,7 +169,7 @@ export function MarketingGetStartedDialog({
                           ))}
                         </TableBody>
                       </Table>
-                    );
+                    )
                   })}
                 </div>
               ))}
@@ -167,5 +178,5 @@ export function MarketingGetStartedDialog({
         </Tabs>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

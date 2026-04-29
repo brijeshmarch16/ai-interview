@@ -1,12 +1,12 @@
-"use client";
-"use no memo";
+"use client"
+"use no memo"
 
 declare module "@tanstack/react-table" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ColumnMeta<TData, TValue> {
-    autoWidth?: boolean;
-    headerAlign?: "left" | "center" | "right";
-    bodyAlign?: "left" | "center" | "right";
+    autoWidth?: boolean
+    headerAlign?: "left" | "center" | "right"
+    bodyAlign?: "left" | "center" | "right"
   }
 }
 
@@ -20,7 +20,7 @@ import {
   type SortingState,
   type Updater,
   useReactTable,
-} from "@tanstack/react-table";
+} from "@tanstack/react-table"
 import {
   Table,
   TableBody,
@@ -28,21 +28,21 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import DataTablePagination from "./data-table-pagination";
+} from "@/components/ui/table"
+import DataTablePagination from "./data-table-pagination"
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  sorting?: SortingState;
-  setSorting?: (updater: Updater<SortingState>) => void;
-  pagination?: PaginationState;
-  setPagination?: (updater: Updater<PaginationState>) => void;
-  rowCount?: number;
-  isLoading?: boolean;
-  manualSorting?: boolean;
-  manualPagination?: boolean;
-  emptyMessage?: string;
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+  sorting?: SortingState
+  setSorting?: (updater: Updater<SortingState>) => void
+  pagination?: PaginationState
+  setPagination?: (updater: Updater<PaginationState>) => void
+  rowCount?: number
+  isLoading?: boolean
+  manualSorting?: boolean
+  manualPagination?: boolean
+  emptyMessage?: string
 }
 
 export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
@@ -58,12 +58,14 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
     manualSorting = true,
     manualPagination,
     emptyMessage = "No results.",
-  } = props;
+  } = props
 
   const table = useReactTable({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    ...(pagination !== undefined && { getPaginationRowModel: getPaginationRowModel() }),
+    ...(pagination !== undefined && {
+      getPaginationRowModel: getPaginationRowModel(),
+    }),
     ...(setSorting && { onSortingChange: setSorting }),
     ...(setPagination && { onPaginationChange: setPagination }),
     manualSorting: manualSorting,
@@ -75,7 +77,7 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
       ...(sorting !== undefined && { sorting }),
       ...(pagination !== undefined && { pagination }),
     },
-  });
+  })
 
   return (
     <div>
@@ -88,7 +90,7 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
                   return (
                     <TableHead
                       key={header.id}
-                      className="font-bold font-geist-sans text-foreground text-sm"
+                      className="font-geist-sans text-sm font-bold text-foreground"
                       style={{
                         minWidth: header.column.columnDef.meta?.autoWidth
                           ? "auto"
@@ -96,15 +98,21 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
                         maxWidth: header.column.columnDef.meta?.autoWidth
                           ? "auto"
                           : header.getSize(),
-                        width: header.column.columnDef.meta?.autoWidth ? "auto" : header.getSize(),
-                        textAlign: header.column.columnDef.meta?.headerAlign || "left",
+                        width: header.column.columnDef.meta?.autoWidth
+                          ? "auto"
+                          : header.getSize(),
+                        textAlign:
+                          header.column.columnDef.meta?.headerAlign || "left",
                       }}
                     >
                       {header.isPlaceholder
                         ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
-                  );
+                  )
                 })}
               </TableRow>
             ))}
@@ -112,13 +120,19 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
           <TableBody>
             {isLoading && table.getRowModel().rows?.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-165 text-center">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-165 text-center"
+                >
                   Loading....
                 </TableCell>
               </TableRow>
             ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
@@ -132,11 +146,15 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
                         width: cell.column.columnDef.meta?.autoWidth
                           ? "auto"
                           : cell.column.getSize(),
-                        textAlign: cell.column.columnDef.meta?.bodyAlign || "left",
+                        textAlign:
+                          cell.column.columnDef.meta?.bodyAlign || "left",
                       }}
-                      className="h-12.45 whitespace-nowrap font-geist-sans font-medium text-sm"
+                      className="h-12.45 font-geist-sans text-sm font-medium whitespace-nowrap"
                     >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -145,7 +163,7 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-52 bg-background-hard text-center hover:bg-background-hard"
+                  className="bg-background-hard hover:bg-background-hard h-52 text-center"
                 >
                   {emptyMessage}
                 </TableCell>
@@ -165,5 +183,5 @@ export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
         />
       )}
     </div>
-  );
+  )
 }

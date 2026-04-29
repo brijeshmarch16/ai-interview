@@ -1,24 +1,24 @@
-"use client";
+"use client"
 
-import { Plus } from "lucide-react";
-import { useState } from "react";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import type { Interviewer } from "@/types/interviewer";
-import CreateInterviewDialog from "../create/create-interview-dialog";
+import { Plus } from "lucide-react"
+import { useState } from "react"
+import { Card, CardContent, CardTitle } from "@/components/ui/card"
+import type { Interviewer } from "@/types/interviewer"
+import CreateInterviewDialog from "../create/create-interview-dialog"
 
 interface CreateInterviewCardProps {
-  interviewers: Interviewer[];
+  interviewers: Interviewer[]
 }
 
 function CreateInterviewCard({ interviewers }: CreateInterviewCardProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   return (
     <>
       <Card
-        className="flex h-64 shrink-0 cursor-pointer items-center overflow-hidden rounded-md border-2 border-border border-dashed shadow-none ring-0"
+        className="flex h-64 shrink-0 cursor-pointer items-center overflow-hidden rounded-md border-2 border-dashed border-border shadow-none ring-0"
         onClick={() => {
-          setOpen(true);
+          setOpen(true)
         }}
       >
         <CardContent className="mx-auto flex h-full flex-col items-center justify-center">
@@ -29,7 +29,9 @@ function CreateInterviewCard({ interviewers }: CreateInterviewCardProps) {
               </div>
             </div>
           </div>
-          <CardTitle className="pt-1.5 text-center text-md">Create an Interview</CardTitle>
+          <CardTitle className="text-md pt-1.5 text-center">
+            Create an Interview
+          </CardTitle>
         </CardContent>
       </Card>
 
@@ -42,7 +44,7 @@ function CreateInterviewCard({ interviewers }: CreateInterviewCardProps) {
         />
       )}
     </>
-  );
+  )
 }
 
-export default CreateInterviewCard;
+export default CreateInterviewCard

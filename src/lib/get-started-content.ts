@@ -2,43 +2,43 @@ export type GetStartedInlinePart =
   | { type: "text"; value: string }
   | { type: "inlineCode"; value: string }
   | { type: "link"; label: string; href: string }
-  | { type: "strong"; value: string };
+  | { type: "strong"; value: string }
 
 export interface GetStartedParagraphBlock {
-  type: "paragraph";
-  parts: GetStartedInlinePart[];
+  type: "paragraph"
+  parts: GetStartedInlinePart[]
 }
 
 export interface GetStartedCodeBlock {
-  type: "code";
-  code: string;
+  type: "code"
+  code: string
 }
 
 export interface GetStartedEnvRow {
-  variable: string;
-  value: GetStartedInlinePart[];
+  variable: string
+  value: GetStartedInlinePart[]
 }
 
 export interface GetStartedEnvTableBlock {
-  type: "envTable";
-  rows: GetStartedEnvRow[];
+  type: "envTable"
+  rows: GetStartedEnvRow[]
 }
 
 export type GetStartedBlock =
   | GetStartedParagraphBlock
   | GetStartedCodeBlock
-  | GetStartedEnvTableBlock;
+  | GetStartedEnvTableBlock
 
 export interface GetStartedStep {
-  title: string;
-  blocks: GetStartedBlock[];
+  title: string
+  blocks: GetStartedBlock[]
 }
 
 export interface GetStartedTab {
-  id: "locally" | "vercel" | "docker";
-  label: string;
-  icon: "terminal" | "rocket" | "server";
-  steps: GetStartedStep[];
+  id: "locally" | "vercel" | "docker"
+  label: string
+  icon: "terminal" | "rocket" | "server"
+  steps: GetStartedStep[]
 }
 
 export const GET_STARTED_TABS: GetStartedTab[] = [
@@ -88,7 +88,8 @@ export const GET_STARTED_TABS: GetStartedTab[] = [
                 value: [
                   {
                     type: "text",
-                    value: "Your Postgres connection string (for example, from ",
+                    value:
+                      "Your Postgres connection string (for example, from ",
                   },
                   { type: "link", label: "Neon", href: "https://neon.tech/" },
                   { type: "text", value: ")" },
@@ -96,7 +97,9 @@ export const GET_STARTED_TABS: GetStartedTab[] = [
               },
               {
                 variable: "RETELL_API_KEY",
-                value: [{ type: "text", value: "From the Retell AI dashboard" }],
+                value: [
+                  { type: "text", value: "From the Retell AI dashboard" },
+                ],
               },
               {
                 variable: "OPENAI_API_KEY",
@@ -226,7 +229,9 @@ export const GET_STARTED_TABS: GetStartedTab[] = [
               },
               {
                 variable: "RETELL_API_KEY",
-                value: [{ type: "text", value: "From the Retell AI dashboard" }],
+                value: [
+                  { type: "text", value: "From the Retell AI dashboard" },
+                ],
               },
               {
                 variable: "OPENAI_API_KEY",
@@ -338,7 +343,9 @@ export const GET_STARTED_TABS: GetStartedTab[] = [
             rows: [
               {
                 variable: "BETTER_AUTH_URL",
-                value: [{ type: "inlineCode", value: "http://your-server-ip:3000" }],
+                value: [
+                  { type: "inlineCode", value: "http://your-server-ip:3000" },
+                ],
               },
               {
                 variable: "BETTER_AUTH_SECRET",
@@ -350,11 +357,15 @@ export const GET_STARTED_TABS: GetStartedTab[] = [
               },
               {
                 variable: "DATABASE_URL",
-                value: [{ type: "text", value: "Your Postgres connection string" }],
+                value: [
+                  { type: "text", value: "Your Postgres connection string" },
+                ],
               },
               {
                 variable: "RETELL_API_KEY",
-                value: [{ type: "text", value: "From the Retell AI dashboard" }],
+                value: [
+                  { type: "text", value: "From the Retell AI dashboard" },
+                ],
               },
               {
                 variable: "OPENAI_API_KEY",
@@ -410,4 +421,4 @@ export const GET_STARTED_TABS: GetStartedTab[] = [
       },
     ],
   },
-];
+]

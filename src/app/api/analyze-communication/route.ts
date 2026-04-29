@@ -1,20 +1,23 @@
-import { NextResponse } from "next/server";
-import { logger } from "@/lib/logger";
-import { openai } from "@/lib/openai";
+import { NextResponse } from "next/server"
+import { logger } from "@/lib/logger"
+import { openai } from "@/lib/openai"
 import {
   getCommunicationAnalysisPrompt,
   SYSTEM_PROMPT,
-} from "@/lib/prompts/communication-analysis";
+} from "@/lib/prompts/communication-analysis"
 
 export async function POST(req: Request) {
-  logger.info("analyze-communication request received");
+  logger.info("analyze-communication request received")
 
   try {
-    const body = await req.json();
-    const { transcript } = body;
+    const body = await req.json()
+    const { transcript } = body
 
     if (!transcript) {
-      return NextResponse.json({ error: "Transcript is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Transcript is required" },
+        { status: 400 }
+      )
     }
 
     const completion = await openai.chat.completions.create({
@@ -30,16 +33,22 @@ export async function POST(req: Request) {
         },
       ],
       response_format: { type: "json_object" },
-    });
+    })
 
-    const analysis = completion.choices[0]?.message?.content;
+    const analysis = completion.choices[0]?.message?.content
 
-    logger.info("Communication analysis completed successfully");
+    logger.info("Communication analysis completed successfully")
 
-    return NextResponse.json({ analysis: JSON.parse(analysis || "{}") }, { status: 200 });
-  } catch (_error) {
-    logger.error("Error analyzing communication skills");
+    return NextResponse.json(
+      { analysis: JSON.parse(analysis || "{}") },
+      { status: 200 }
+    )
+  } catch {
+    logger.error("Error analyzing communication skills")
 
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    )
   }
 }

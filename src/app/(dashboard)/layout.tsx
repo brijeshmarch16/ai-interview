@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import AppSidebar from "@/components/dashboard/app-sidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { createMetadata } from "@/lib/metadata";
+import type { Metadata } from "next"
+import AppSidebar from "@/components/dashboard/app-sidebar"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { createMetadata } from "@/lib/metadata"
 
 export const metadata: Metadata = createMetadata({
   title: "AI Interview Dashboard",
   icons: { icon: "/browser-client-icon.ico" },
-});
+})
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -20,5 +20,5 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {children}
       </main>
     </SidebarProvider>
-  );
+  )
 }

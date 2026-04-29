@@ -1,4 +1,4 @@
-import { CandidateStatus } from "@/lib/db/schema";
+import { CandidateStatus } from "@/lib/db/schema"
 
 export const CANDIDATE_STATUS_OPTIONS = [
   {
@@ -25,11 +25,11 @@ export const CANDIDATE_STATUS_OPTIONS = [
     dot: "bg-green-500",
     badge: "bg-green-100 text-green-700 border-green-200",
   },
-] as const;
+] as const
 
-export const PAGE_SIZE = 10;
+export const PAGE_SIZE = 10
 
-export const GITHUB_REPO_URL = "https://github.com/brijeshmarch16/ai-interview";
+export const GITHUB_REPO_URL = "https://github.com/brijeshmarch16/ai-interview"
 
 export const RETELL_AGENT_GENERAL_PROMPT = `You are an interviewer who is an expert in asking follow up questions to uncover deeper insights. You have to keep the interview for {{mins}} or short. 
 
@@ -48,7 +48,7 @@ Follow the guidlines below when conversing.
 - The question word count should be 30 words or less
 - Make sure you do not repeat any of the questions.
 - Do not talk about anything not related to the objective and the given questions.
-- If the name is given, use it in the conversation.`;
+- If the name is given, use it in the conversation.`
 
 export const INTERVIEWERS = {
   LISA: {
@@ -73,4 +73,4 @@ export const INTERVIEWERS = {
       "Hi! I'm Bob, your go-to empathetic interviewer. I excel at understanding and connecting with people on a deeper level, ensuring every conversation is insightful and meaningful. With a focus on empathy, I'm here to listen and learn from you. Let's create a genuine connection!",
     audio: "bob.wav",
   },
-};
+}

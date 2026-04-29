@@ -1,4 +1,4 @@
-import type React from "react";
+import type React from "react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,15 +9,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from "@/components/ui/alert-dialog"
 
 interface ConfirmDialogProps {
-  trigger: React.ReactNode;
-  title: string;
-  description?: string;
-  cancelText?: string;
-  confirmText?: string;
-  onConfirm: () => void;
+  trigger: React.ReactNode
+  title: string
+  description?: string
+  cancelText?: string
+  confirmText?: string
+  onConfirm: () => void
 }
 
 export default function ConfirmDialog(props: ConfirmDialogProps) {
@@ -28,7 +28,7 @@ export default function ConfirmDialog(props: ConfirmDialogProps) {
     cancelText = "Cancel",
     confirmText = "Continue",
     onConfirm,
-  } = props;
+  } = props
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
@@ -39,11 +39,14 @@ export default function ConfirmDialog(props: ConfirmDialogProps) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>{cancelText}</AlertDialogCancel>
-          <AlertDialogAction className="bg-primary hover:bg-primary/90" onClick={onConfirm}>
+          <AlertDialogAction
+            className="bg-primary hover:bg-primary/90"
+            onClick={onConfirm}
+          >
             {confirmText}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
+  )
 }

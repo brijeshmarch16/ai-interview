@@ -27,10 +27,10 @@ function LoaderWithText() {
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-center font-medium text-lg">Loading</span>
+        <span className="text-center text-lg font-medium">Loading</span>
       </div>
     </div>
-  );
+  )
 }
 
-export default LoaderWithText;
+export default LoaderWithText

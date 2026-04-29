@@ -1,16 +1,16 @@
-"use client";
+"use client"
 
-import { XIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { XIcon } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 
 interface AppSearchProps {
-  placeholder?: string;
-  onChangeSearchValue: (value: string) => void;
-  searchValue: string;
-  onSearch: () => void;
-  onClearSearch: () => void;
-  isDisabledButton?: boolean;
+  placeholder?: string
+  onChangeSearchValue: (value: string) => void
+  searchValue: string
+  onSearch: () => void
+  onClearSearch: () => void
+  isDisabledButton?: boolean
 }
 
 export default function AppSearch(props: AppSearchProps) {
@@ -21,7 +21,7 @@ export default function AppSearch(props: AppSearchProps) {
     onSearch,
     onClearSearch,
     isDisabledButton = false,
-  } = props;
+  } = props
 
   return (
     <div className="flex w-full items-center gap-2">
@@ -31,7 +31,7 @@ export default function AppSearch(props: AppSearchProps) {
           placeholder={placeholder}
           value={searchValue}
           onChange={(e) => onChangeSearchValue(e.target.value)}
-          className="w-full text-muted-foreground text-xs placeholder:text-xs"
+          className="w-full text-xs text-muted-foreground placeholder:text-xs"
         />
 
         {/* Search clear button */}
@@ -53,5 +53,5 @@ export default function AppSearch(props: AppSearchProps) {
         </Button>
       </div>
     </div>
-  );
+  )
 }

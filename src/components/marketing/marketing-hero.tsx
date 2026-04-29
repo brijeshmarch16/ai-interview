@@ -1,13 +1,13 @@
-import Image from "next/image";
-import { GITHUB_REPO_URL } from "@/lib/constants";
-import { GithubIcon } from "../icons/github-icon";
-import { Button } from "../ui/button";
-import { Card } from "../ui/card";
-import { NumberTicker } from "../ui/number-ticker";
-import { MarketingGetStartedDialog } from "./marketing-get-started-dialog";
+import Image from "next/image"
+import { GITHUB_REPO_URL } from "@/lib/constants"
+import { GithubIcon } from "../icons/github-icon"
+import { Button } from "../ui/button"
+import { Card } from "../ui/card"
+import { NumberTicker } from "../ui/number-ticker"
+import { MarketingGetStartedDialog } from "./marketing-get-started-dialog"
 
 interface MarketingHeroProps {
-  stars: number;
+  stars: number
 }
 
 export default function MarketingHero({ stars }: MarketingHeroProps) {
@@ -22,14 +22,15 @@ export default function MarketingHero({ stars }: MarketingHeroProps) {
         }}
       />
 
-      <h1 className="font-extrabold text-4xl leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+      <h1 className="text-4xl leading-tight font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
         AI voice interviews.{" "}
         <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
           Open source, self-hosted.
         </span>
       </h1>
       <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-        Paste a job description, send a link, and get a full scorecard back in minutes.
+        Paste a job description, send a link, and get a full scorecard back in
+        minutes.
       </p>
       <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
         <MarketingGetStartedDialog triggerAriaLabel="Get started with setup guide">
@@ -50,7 +51,7 @@ export default function MarketingHero({ stars }: MarketingHeroProps) {
           <span className="size-3 rounded-full bg-red-400" />
           <span className="size-3 rounded-full bg-yellow-400" />
           <span className="size-3 rounded-full bg-green-400" />
-          <span className="ml-3 flex-1 rounded bg-muted px-3 py-1 text-muted-foreground text-xs">
+          <span className="ml-3 flex-1 rounded bg-muted px-3 py-1 text-xs text-muted-foreground">
             ai-interview.brijeshkumaryadav.com
           </span>
         </div>
@@ -65,5 +66,5 @@ export default function MarketingHero({ stars }: MarketingHeroProps) {
         />
       </Card>
     </section>
-  );
+  )
 }

@@ -1,29 +1,29 @@
-"use server";
+"use server"
 
-import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
+import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf"
 
 export async function parsePdf(formData: FormData) {
   try {
-    const file = formData.get("file") as File;
+    const file = formData.get("file") as File
 
     if (!file) {
-      throw new Error("No file provided");
+      throw new Error("No file provided")
     }
 
-    const loader = new PDFLoader(file);
-    const docs = await loader.load();
-    const fullText = docs.map((doc) => doc.pageContent).join("\n");
+    const loader = new PDFLoader(file)
+    const docs = await loader.load()
+    const fullText = docs.map((doc) => doc.pageContent).join("\n")
 
     return {
       success: true as const,
       text: fullText,
-    };
+    }
   } catch (error) {
-    console.error("Error parsing PDF:", error);
+    console.error("Error parsing PDF:", error)
 
     return {
       success: false as const,
       error: "Failed to parse PDF",
-    };
+    }
   }
 }

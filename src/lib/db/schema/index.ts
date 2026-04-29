@@ -7,22 +7,23 @@ import {
   text,
   timestamp,
   uuid,
-} from "drizzle-orm/pg-core";
-import type { Question } from "@/types/interview";
-import type { Analytics, CallData } from "@/types/response";
+} from "drizzle-orm/pg-core"
+import type { Question } from "@/types/interview"
+import type { Analytics, CallData } from "@/types/response"
 
-export * from "./auth";
+export * from "./auth"
 
-import { user } from "./auth";
+import { user } from "./auth"
 
 export const candidateStatusEnum = pgEnum("candidate_status", [
   "NO_STATUS",
   "NOT_SELECTED",
   "POTENTIAL",
   "SELECTED",
-]);
+])
 
-export type CandidateStatusValue = (typeof candidateStatusEnum.enumValues)[number];
+export type CandidateStatusValue =
+  (typeof candidateStatusEnum.enumValues)[number]
 
 // Derived from the DB enum — single source of truth, TypeScript will catch any drift
 export const CandidateStatus = {
@@ -30,7 +31,7 @@ export const CandidateStatus = {
   NOT_SELECTED: "NOT_SELECTED",
   POTENTIAL: "POTENTIAL",
   SELECTED: "SELECTED",
-} as const satisfies Record<CandidateStatusValue, CandidateStatusValue>;
+} as const satisfies Record<CandidateStatusValue, CandidateStatusValue>
 
 export const interviewer = pgTable("interviewer", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -44,7 +45,7 @@ export const interviewer = pgTable("interviewer", {
   exploration: integer("exploration").notNull(),
   rapport: integer("rapport").notNull(),
   speed: integer("speed").notNull(),
-});
+})
 
 export const interview = pgTable("interview", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -61,7 +62,7 @@ export const interview = pgTable("interview", {
   questionCount: integer("question_count"),
   responseCount: integer("response_count").default(0),
   timeDuration: text("time_duration"),
-});
+})
 
 export const response = pgTable("response", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -78,7 +79,7 @@ export const response = pgTable("response", {
   isEnded: boolean("is_ended").default(false),
   isViewed: boolean("is_viewed").default(false),
   tabSwitchCount: integer("tab_switch_count"),
-});
+})
 
 export const feedback = pgTable("feedback", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -87,4 +88,4 @@ export const feedback = pgTable("feedback", {
   email: text("email"),
   feedbackText: text("feedback"),
   satisfaction: integer("satisfaction"),
-});
+})

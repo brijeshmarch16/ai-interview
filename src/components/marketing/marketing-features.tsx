@@ -1,5 +1,5 @@
-import { BarChart3, ShieldCheck, UserCheck, Users } from "lucide-react";
-import { Card, CardContent } from "../ui/card";
+import { BarChart3, ShieldCheck, UserCheck, Users } from "lucide-react"
+import { Card, CardContent } from "../ui/card"
 
 const features = [
   {
@@ -26,16 +26,16 @@ const features = [
     description:
       "Track completion rates, average duration, and sentiment trends across all your interviews.",
   },
-];
+]
 
 export default function MarketingFeatures() {
   return (
     <section className="bg-muted/30 py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-6">
-        <p className="mb-4 font-semibold text-muted-foreground text-xs uppercase tracking-widest">
+        <p className="mb-4 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
           What&apos;s included
         </p>
-        <h2 className="mb-12 font-extrabold text-3xl tracking-tight sm:text-4xl">
+        <h2 className="mb-12 text-3xl font-extrabold tracking-tight sm:text-4xl">
           Everything you need to run the whole process.
         </h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -47,13 +47,15 @@ export default function MarketingFeatures() {
             >
               <CardContent>
                 <f.icon size={20} className="mb-3 text-primary" />
-                <h3 className="mb-1 font-semibold text-base">{f.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{f.description}</p>
+                <h3 className="mb-1 text-base font-semibold">{f.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {f.description}
+                </p>
               </CardContent>
             </Card>
           ))}
         </div>
       </div>
     </section>
-  );
+  )
 }

@@ -1,11 +1,11 @@
-import type { FeedbackData } from "@/types/response";
+import type { FeedbackData } from "@/types/response"
 
 interface CandidateFeedbackProps {
-  feedbackData: FeedbackData;
+  feedbackData: FeedbackData
 }
 
 export function CandidateFeedback({ feedbackData }: CandidateFeedbackProps) {
-  if (feedbackData.satisfaction === null && !feedbackData.feedback) return null;
+  if (feedbackData.satisfaction === null && !feedbackData.feedback) return null
 
   return (
     <div className="my-3 min-h-30 rounded-xl bg-muted p-4 px-5">
@@ -31,5 +31,5 @@ export function CandidateFeedback({ feedbackData }: CandidateFeedbackProps) {
         )}
       </div>
     </div>
-  );
+  )
 }

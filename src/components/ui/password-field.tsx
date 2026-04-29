@@ -1,29 +1,32 @@
-"use client";
+"use client"
 
-import { Eye, EyeOff } from "lucide-react";
-import { useId, useState } from "react";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { Eye, EyeOff } from "lucide-react"
+import { useId, useState } from "react"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from "@/components/ui/input-group";
+} from "@/components/ui/input-group"
 
-type FieldErrorType = { message?: string } | undefined;
+type FieldErrorType = { message?: string } | undefined
 
-type PasswordFieldProps = Omit<React.ComponentProps<typeof InputGroupInput>, "type"> & {
-  label: string;
-  invalid?: boolean;
-  error?: FieldErrorType;
-};
+type PasswordFieldProps = Omit<
+  React.ComponentProps<typeof InputGroupInput>,
+  "type"
+> & {
+  label: string
+  invalid?: boolean
+  error?: FieldErrorType
+}
 
 export function PasswordField(props: PasswordFieldProps) {
-  const { id, label, invalid, error, disabled, ...rest } = props;
-  const [isVisible, setIsVisible] = useState(false);
-  const generatedId = useId();
-  const fieldId = id ?? generatedId;
-  const toggleLabel = isVisible ? "Hide password" : "Show password";
+  const { id, label, invalid, error, disabled, ...rest } = props
+  const [isVisible, setIsVisible] = useState(false)
+  const generatedId = useId()
+  const fieldId = id ?? generatedId
+  const toggleLabel = isVisible ? "Hide password" : "Show password"
 
   return (
     <Field data-invalid={invalid}>
@@ -50,5 +53,5 @@ export function PasswordField(props: PasswordFieldProps) {
       </InputGroup>
       {invalid && <FieldError errors={[error]} />}
     </Field>
-  );
+  )
 }

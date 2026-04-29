@@ -1,5 +1,5 @@
-import Image from "next/image";
-import styles from "./loader.module.css";
+import Image from "next/image"
+import styles from "./loader.module.css"
 
 function LoaderWithLogo() {
   return (
@@ -16,7 +16,7 @@ function LoaderWithLogo() {
         <div className={styles.loader} />
       </div>
     </div>
-  );
+  )
 }
 
-export default LoaderWithLogo;
+export default LoaderWithLogo

@@ -1,25 +1,39 @@
-"use client";
+"use client"
 
-import type { Table } from "@tanstack/react-table";
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
-import { Button } from "./button";
+import type { Table } from "@tanstack/react-table"
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react"
+import { Button } from "./button"
 
 interface DataTablePaginationProps<TData> {
-  table: Table<TData>;
-  pageIndex: number;
-  pageCount: number;
-  canPreviousPage: boolean;
-  canNextPage: boolean;
-  pageLabel?: (current: number, total: number) => string;
+  table: Table<TData>
+  pageIndex: number
+  pageCount: number
+  canPreviousPage: boolean
+  canNextPage: boolean
+  pageLabel?: (current: number, total: number) => string
 }
 
-export default function DataTablePagination<TData>(props: DataTablePaginationProps<TData>) {
-  const { table, pageIndex, pageCount, canPreviousPage, canNextPage, pageLabel } = props;
+export default function DataTablePagination<TData>(
+  props: DataTablePaginationProps<TData>
+) {
+  const {
+    table,
+    pageIndex,
+    pageCount,
+    canPreviousPage,
+    canNextPage,
+    pageLabel,
+  } = props
 
   return (
     <div className="flex items-center justify-end">
       <div className="flex w-full items-center gap-8 lg:w-fit">
-        <div className="flex w-fit items-center justify-center font-medium text-sm">
+        <div className="flex w-fit items-center justify-center text-sm font-medium">
           {pageLabel
             ? pageLabel(pageIndex + 1, pageCount)
             : `Page ${pageIndex + 1} of ${pageCount}`}
@@ -64,5 +78,5 @@ export default function DataTablePagination<TData>(props: DataTablePaginationPro
         </div>
       </div>
     </div>
-  );
+  )
 }

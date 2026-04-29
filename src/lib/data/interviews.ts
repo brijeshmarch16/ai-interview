@@ -1,26 +1,28 @@
-import "server-only";
+import "server-only"
 
-import { desc, eq, sql } from "drizzle-orm";
-import { db } from "@/lib/db";
-import { interview, interviewer, response } from "@/lib/db/schema";
-import type { Interview } from "@/types/database.types";
-import type { Question } from "@/types/interview";
+import { desc, eq, sql } from "drizzle-orm"
+import { db } from "@/lib/db"
+import { interview, interviewer, response } from "@/lib/db/schema"
+import type { Interview } from "@/types/database.types"
+import type { Question } from "@/types/interview"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type InterviewWithDetails = {
-  id: string;
-  name: string | null;
-  readableSlug: string | null;
-  interviewerImage: string | null;
-  responseCount: number | null;
-  isActive: boolean | null;
-};
+  id: string
+  name: string | null
+  readableSlug: string | null
+  interviewerImage: string | null
+  responseCount: number | null
+  isActive: boolean | null
+}
 
 // ─── getInterviewsWithDetails ─────────────────────────────────────────────────
 // List all interviews for a user with their interviewer image and completed response count.
 
-export const getInterviewsWithDetails = async (userId: string): Promise<InterviewWithDetails[]> => {
+export const getInterviewsWithDetails = async (
+  userId: string
+): Promise<InterviewWithDetails[]> => {
   try {
     const responseCountSubquery = db
       .select({
@@ -30,7 +32,7 @@ export const getInterviewsWithDetails = async (userId: string): Promise<Intervie
       .from(response)
       .where(eq(response.isEnded, true))
       .groupBy(response.interviewId)
-      .as("rcs");
+      .as("rcs")
 
     const data = await db
       .select({
@@ -43,31 +45,36 @@ export const getInterviewsWithDetails = async (userId: string): Promise<Intervie
       })
       .from(interview)
       .leftJoin(interviewer, eq(interview.interviewerId, interviewer.id))
-      .leftJoin(responseCountSubquery, eq(interview.id, responseCountSubquery.interviewId))
+      .leftJoin(
+        responseCountSubquery,
+        eq(interview.id, responseCountSubquery.interviewId)
+      )
       .where(eq(interview.userId, userId))
-      .orderBy(desc(interview.createdAt));
+      .orderBy(desc(interview.createdAt))
 
-    return data ?? [];
+    return data ?? []
   } catch (error) {
-    console.log(error);
-    return [];
+    console.log(error)
+    return []
   }
-};
+}
 
 // ─── getInterviewById ─────────────────────────────────────────────────────────
 // Fetch a single interview by ID, with questions cast to the typed Question[].
 
-export const getInterviewById = async (id: string): Promise<Interview | null> => {
+export const getInterviewById = async (
+  id: string
+): Promise<Interview | null> => {
   try {
-    const data = await db.select().from(interview).where(eq(interview.id, id));
-    const row = data[0];
-    if (!row) return null;
+    const data = await db.select().from(interview).where(eq(interview.id, id))
+    const row = data[0]
+    if (!row) return null
     return {
       ...row,
       questions: row.questions as Question[] | null,
-    };
+    }
   } catch (error) {
-    console.log(error);
-    return null;
+    console.log(error)
+    return null
   }
-};
+}

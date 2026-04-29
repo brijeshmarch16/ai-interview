@@ -1,13 +1,13 @@
-import "server-only";
+import "server-only"
 
-import { and, avg, count, desc, eq, ilike, isNull, or, sql } from "drizzle-orm";
-import { PAGE_SIZE } from "@/lib/constants";
-import { db } from "@/lib/db";
-import { response } from "@/lib/db/schema";
-import type { CandidateStatusValue } from "@/lib/db/schema";
-import { CandidateStatus } from "@/lib/db/schema";
+import { and, avg, count, desc, eq, ilike, isNull, or, sql } from "drizzle-orm"
+import { PAGE_SIZE } from "@/lib/constants"
+import { db } from "@/lib/db"
+import { response } from "@/lib/db/schema"
+import type { CandidateStatusValue } from "@/lib/db/schema"
+import { CandidateStatus } from "@/lib/db/schema"
 
-export { PAGE_SIZE };
+export { PAGE_SIZE }
 
 // ─── getResponsesPaginated ────────────────────────────────────────────────────
 // Paginated list of completed responses for an interview, with optional name search and status filter.
@@ -19,11 +19,11 @@ export const getResponsesPaginated = async ({
   search,
   status,
 }: {
-  interviewId: string;
-  page?: number;
-  pageSize?: number;
-  search?: string;
-  status?: string;
+  interviewId: string
+  page?: number
+  pageSize?: number
+  search?: string
+  status?: string
 }) => {
   const where = and(
     eq(response.interviewId, interviewId),
@@ -31,10 +31,13 @@ export const getResponsesPaginated = async ({
     search ? ilike(response.name, `%${search}%`) : undefined,
     status && status !== "ALL"
       ? status === "NO_STATUS"
-        ? or(isNull(response.candidateStatus), eq(response.candidateStatus, "NO_STATUS"))
+        ? or(
+            isNull(response.candidateStatus),
+            eq(response.candidateStatus, "NO_STATUS")
+          )
         : eq(response.candidateStatus, status as CandidateStatusValue)
-      : undefined,
-  );
+      : undefined
+  )
   const [data, countResult] = await Promise.all([
     db
       .select()
@@ -44,9 +47,9 @@ export const getResponsesPaginated = async ({
       .limit(pageSize)
       .offset(page * pageSize),
     db.select({ count: count() }).from(response).where(where),
-  ]);
-  return { data, total: Number(countResult[0]?.count ?? 0) };
-};
+  ])
+  return { data, total: Number(countResult[0]?.count ?? 0) }
+}
 
 // ─── getInterviewStats ────────────────────────────────────────────────────────
 // Single-pass DB aggregation: completion rate, avg duration, sentiment counts, candidate status counts.
@@ -84,11 +87,13 @@ export const getInterviewStats = async (interviewId: string) => {
       )::int`,
     })
     .from(response)
-    .where(and(eq(response.interviewId, interviewId), eq(response.isEnded, true)));
+    .where(
+      and(eq(response.interviewId, interviewId), eq(response.isEnded, true))
+    )
 
-  const row = result[0];
-  const totalCount = Number(row?.totalCount ?? 0);
-  const completedCount = Number(row?.completedCount ?? 0);
+  const row = result[0]
+  const totalCount = Number(row?.totalCount ?? 0)
+  const completedCount = Number(row?.completedCount ?? 0)
 
   return {
     totalCount,
@@ -105,8 +110,8 @@ export const getInterviewStats = async (interviewId: string) => {
       [CandidateStatus.POTENTIAL]: row?.potential ?? 0,
       [CandidateStatus.SELECTED]: row?.selected ?? 0,
     },
-  };
-};
+  }
+}
 
 // ─── getResponseEmails ────────────────────────────────────────────────────────
 // All candidate emails that have attempted this interview (used for duplicate-entry checks).
@@ -116,24 +121,24 @@ export const getResponseEmails = async (interviewId: string) => {
     const data = await db
       .select({ email: response.email })
       .from(response)
-      .where(eq(response.interviewId, interviewId));
+      .where(eq(response.interviewId, interviewId))
 
-    return data || [];
+    return data || []
   } catch (error) {
-    console.log(error);
-    return [];
+    console.log(error)
+    return []
   }
-};
+}
 
 // ─── getResponseByCallId ──────────────────────────────────────────────────────
 // Look up a response row by its Retell call_id (used in webhook and analysis flow).
 
 export const getResponseByCallId = async (id: string) => {
   try {
-    const data = await db.select().from(response).where(eq(response.callId, id));
-    return data ? data[0] : null;
+    const data = await db.select().from(response).where(eq(response.callId, id))
+    return data ? data[0] : null
   } catch (error) {
-    console.log(error);
-    return null;
+    console.log(error)
+    return null
   }
-};
+}

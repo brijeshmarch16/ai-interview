@@ -3,5 +3,5 @@ export function BrandName({ className }: { className?: string }) {
     <span className={className}>
       AI <span className="font-extrabold text-primary">Interview</span>
     </span>
-  );
+  )
 }

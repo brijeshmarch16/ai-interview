@@ -1,9 +1,9 @@
-"use client";
+"use client"
 
-import { LogOut, PlayCircleIcon, Settings } from "lucide-react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { LogOut, PlayCircleIcon, Settings } from "lucide-react"
+import Link from "next/link"
+import { usePathname, useRouter } from "next/navigation"
+import { toast } from "sonner"
 import {
   Sidebar,
   SidebarContent,
@@ -15,30 +15,30 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
   useSidebar,
-} from "@/components/ui/sidebar";
-import { signOut, useSession } from "@/lib/auth/client";
-import { BrandName } from "../ui/brand-name";
-import { Button } from "../ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+} from "@/components/ui/sidebar"
+import { signOut, useSession } from "@/lib/auth/client"
+import { BrandName } from "../ui/brand-name"
+import { Button } from "../ui/button"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 export default function AppSidebar() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const { data: session } = useSession();
-  const { state, isMobile } = useSidebar();
+  const router = useRouter()
+  const pathname = usePathname()
+  const { data: session } = useSession()
+  const { state, isMobile } = useSidebar()
 
   const handleLogout = async () => {
-    await signOut();
-    toast.success("Logged out successfully");
-    router.push("/sign-in");
-  };
+    await signOut()
+    toast.success("Logged out successfully")
+    router.push("/sign-in")
+  }
 
   return (
     <Sidebar collapsible="icon" variant="floating">
-      <SidebarHeader className="border-sidebar-border border-b p-4 group-data-[collapsible=icon]:p-2">
+      <SidebarHeader className="border-b border-sidebar-border p-4 group-data-[collapsible=icon]:p-2">
         <div className="flex items-center gap-3">
           <div className="flex items-baseline gap-2 group-data-[collapsible=icon]:hidden">
-            <BrandName className="font-semibold text-2xl" />
+            <BrandName className="text-2xl font-semibold" />
           </div>
           <SidebarTrigger className="ml-auto" />
         </div>
@@ -82,12 +82,22 @@ export default function AppSidebar() {
           <div className="flex items-center justify-between group-data-[collapsible=icon]:justify-center">
             <div className="min-w-0 group-data-[collapsible=icon]:hidden">
               <p className="text-sm">{session?.user.name}</p>
-              <p className="truncate text-muted-foreground text-sm">{session?.user.email}</p>
+              <p className="truncate text-sm text-muted-foreground">
+                {session?.user.email}
+              </p>
             </div>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="ghost" onClick={handleLogout} size="icon" aria-label="Log out">
-                  <LogOut className="cursor-pointer text-muted-foreground" size={16} />
+                <Button
+                  variant="ghost"
+                  onClick={handleLogout}
+                  size="icon"
+                  aria-label="Log out"
+                >
+                  <LogOut
+                    className="cursor-pointer text-muted-foreground"
+                    size={16}
+                  />
                 </Button>
               </TooltipTrigger>
               <TooltipContent
@@ -102,5 +112,5 @@ export default function AppSidebar() {
         </div>
       </SidebarFooter>
     </Sidebar>
-  );
+  )
 }
