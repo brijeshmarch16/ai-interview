@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -7,47 +7,51 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from "@/components/ui/alert-dialog"
 
 const useTabSwitchPrevention = () => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [tabSwitchCount, setTabSwitchCount] = useState(0);
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [tabSwitchCount, setTabSwitchCount] = useState(0)
 
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        setIsDialogOpen(true);
-        setTabSwitchCount((prev) => prev + 1);
+        setIsDialogOpen(true)
+        setTabSwitchCount((prev) => prev + 1)
       }
-    };
+    }
 
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange)
 
     return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, []);
+      document.removeEventListener("visibilitychange", handleVisibilityChange)
+    }
+  }, [])
 
   const handleUnderstand = () => {
-    setIsDialogOpen(false);
-  };
+    setIsDialogOpen(false)
+  }
 
-  return { isDialogOpen, tabSwitchCount, handleUnderstand };
-};
-
-interface TabSwitchWarningProps {
-  isDialogOpen: boolean;
-  onUnderstand: () => void;
+  return { isDialogOpen, tabSwitchCount, handleUnderstand }
 }
 
-function TabSwitchWarning({ isDialogOpen, onUnderstand }: TabSwitchWarningProps) {
+interface TabSwitchWarningProps {
+  isDialogOpen: boolean
+  onUnderstand: () => void
+}
+
+function TabSwitchWarning({
+  isDialogOpen,
+  onUnderstand,
+}: TabSwitchWarningProps) {
   return (
     <AlertDialog open={isDialogOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Warning: Tab Switching</AlertDialogTitle>
           <AlertDialogDescription>
-            Switching tabs may degrade your interview performance. Tab switching is tracked.
+            Switching tabs may degrade your interview performance. Tab switching
+            is tracked.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -60,7 +64,7 @@ function TabSwitchWarning({ isDialogOpen, onUnderstand }: TabSwitchWarningProps)
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
+  )
 }
 
-export { TabSwitchWarning, useTabSwitchPrevention };
+export { TabSwitchWarning, useTabSwitchPrevention }

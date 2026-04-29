@@ -1,11 +1,11 @@
 export const SYSTEM_PROMPT =
-  "You are an expert in coming up with follow up questions to uncover deeper insights.";
+  "You are an expert in coming up with follow up questions to uncover deeper insights."
 
 export const generateQuestionsPrompt = (body: {
-  name: string;
-  objective: string;
-  number: number;
-  context: string;
+  name: string
+  objective: string
+  number: number
+  context: string
 }) => `Imagine you are an interviewer specialized in designing interview questions to help hiring managers find candidates with strong technical expertise and project experience, making it easier to identify the ideal fit for the role.
               
 Interview Title: ${body.name}
@@ -29,4 +29,4 @@ user to understand what the content of the interview would be. Make sure it is c
 
 The field 'questions' should take the format of an array of objects with the following key: question. 
 
-Strictly output only a JSON object with the keys 'questions' and 'description'.`;
+Strictly output only a JSON object with the keys 'questions' and 'description'.`

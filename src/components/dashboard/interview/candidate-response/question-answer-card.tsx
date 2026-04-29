@@ -1,12 +1,16 @@
-import { CardTitle } from "@/components/ui/card";
+import { CardTitle } from "@/components/ui/card"
 
 interface QuestionCardProps {
-  questionNumber: number;
-  question: string;
-  answer: string;
+  questionNumber: number
+  question: string
+  answer: string
 }
 
-function QuestionAnswerCard({ questionNumber, question, answer }: QuestionCardProps) {
+function QuestionAnswerCard({
+  questionNumber,
+  question,
+  answer,
+}: QuestionCardProps) {
   return (
     <div className="mb-2 rounded-2xl bg-card py-2 shadow-md">
       <div className="flex flex-row items-center">
@@ -19,6 +23,6 @@ function QuestionAnswerCard({ questionNumber, question, answer }: QuestionCardPr
         </div>
       </div>
     </div>
-  );
+  )
 }
-export default QuestionAnswerCard;
+export default QuestionAnswerCard

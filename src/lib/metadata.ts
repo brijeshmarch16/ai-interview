@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata } from "next"
 
 export const baseUrl =
   process.env.NODE_ENV === "development"
     ? new URL("http://localhost:3000")
-    : new URL("https://ai-interview.brijeshkumaryadav.com");
+    : new URL("https://ai-interview.brijeshkumaryadav.com")
 
 export function createMetadata(override: Metadata): Metadata {
   return {
@@ -23,5 +23,5 @@ export function createMetadata(override: Metadata): Metadata {
       description: override.description ?? undefined,
       ...override.twitter,
     },
-  };
+  }
 }

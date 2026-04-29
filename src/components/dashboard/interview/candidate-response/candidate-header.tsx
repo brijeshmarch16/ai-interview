@@ -1,17 +1,17 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import CandidateStatusDropdown from "./candidate-status-dropdown";
-import { DeleteResponseDialog } from "./delete-response-dialog";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import CandidateStatusDropdown from "./candidate-status-dropdown"
+import { DeleteResponseDialog } from "./delete-response-dialog"
 
 interface CandidateHeaderProps {
-  call_id: string;
-  name: string;
-  email: string;
-  candidateStatus: string;
-  recordingUrl?: string | null;
-  tabSwitchCount?: number;
-  isDeleting: boolean;
-  onDeleteClick: () => void;
+  call_id: string
+  name: string
+  email: string
+  candidateStatus: string
+  recordingUrl?: string | null
+  tabSwitchCount?: number
+  isDeleting: boolean
+  onDeleteClick: () => void
 }
 
 export function CandidateHeader(props: CandidateHeaderProps) {
@@ -24,7 +24,7 @@ export function CandidateHeader(props: CandidateHeaderProps) {
     tabSwitchCount,
     isDeleting,
     onDeleteClick,
-  } = props;
+  } = props
   return (
     <div className="min-h-30 rounded-xl bg-muted p-4">
       <div className="flex w-full flex-col justify-between gap-3">
@@ -36,7 +36,7 @@ export function CandidateHeader(props: CandidateHeaderProps) {
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              {name && <p className="px-2 font-semibold text-sm">{name}</p>}
+              {name && <p className="px-2 text-sm font-semibold">{name}</p>}
               {email && <p className="px-2 text-sm">{email}</p>}
             </div>
           </div>
@@ -52,8 +52,14 @@ export function CandidateHeader(props: CandidateHeaderProps) {
 
             {/* Status + Delete always stay together */}
             <div className="flex items-center gap-2">
-              <CandidateStatusDropdown call_id={call_id} initialStatus={candidateStatus} />
-              <DeleteResponseDialog isDeleting={isDeleting} onConfirm={onDeleteClick} />
+              <CandidateStatusDropdown
+                call_id={call_id}
+                initialStatus={candidateStatus}
+              />
+              <DeleteResponseDialog
+                isDeleting={isDeleting}
+                onConfirm={onDeleteClick}
+              />
             </div>
           </div>
         </div>
@@ -64,11 +70,13 @@ export function CandidateHeader(props: CandidateHeaderProps) {
               // biome-ignore lint/a11y/useMediaCaption: false
               <audio src={recordingUrl} controls />
             ) : (
-              <p className="text-muted-foreground text-sm">No recording available.</p>
+              <p className="text-sm text-muted-foreground">
+                No recording available.
+              </p>
             )}
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,58 +1,58 @@
-"use client";
+"use client"
 
-import type { PaginationState, Updater } from "@tanstack/react-table";
-import { Clock, Pencil, Trash2, UserCheck, Users } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
-import { useMemo, useState } from "react";
-import { toast } from "sonner";
-import { analyzeCall, getCallData } from "@/actions/retell";
-import { getFeedbackByInterviewIdAndEmail } from "@/actions/feedback";
-import { updateInterview } from "@/actions/interviews";
-import { getResponseByCallIdAction, updateResponse } from "@/actions/responses";
-import type { BreadcrumbOptions } from "@/components/ui/app-breadcrumbs";
-import AppBreadcrumbs from "@/components/ui/app-breadcrumbs";
-import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/data-table";
-import { Switch } from "@/components/ui/switch";
-import { PAGE_SIZE } from "@/lib/constants";
-import { convertSecondstoMMSS } from "@/lib/utils";
-import type { Interview } from "@/types/database.types";
-import type { Interviewer } from "@/types/interviewer";
-import type { InterviewDetailTableResponse } from "@/types/database.types";
-import type { Analytics, CallData, FeedbackData } from "@/types/response";
-import CandidateResponseDialog from "../candidate-response";
-import CreateInterviewDialog from "../create/create-interview-dialog";
-import DeleteInterviewDialog from "./delete-interview-dialog";
-import InterviewDetailSearch from "./interview-detail-search";
-import StatusCard from "./status-card";
-import { useInterviewDetailColumns } from "./use-interview-detail-columns";
+import type { PaginationState, Updater } from "@tanstack/react-table"
+import { Clock, Pencil, Trash2, UserCheck, Users } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs"
+import { useMemo, useState } from "react"
+import { toast } from "sonner"
+import { analyzeCall, getCallData } from "@/actions/retell"
+import { getFeedbackByInterviewIdAndEmail } from "@/actions/feedback"
+import { updateInterview } from "@/actions/interviews"
+import { getResponseByCallIdAction, updateResponse } from "@/actions/responses"
+import type { BreadcrumbOptions } from "@/components/ui/app-breadcrumbs"
+import AppBreadcrumbs from "@/components/ui/app-breadcrumbs"
+import { Button } from "@/components/ui/button"
+import { DataTable } from "@/components/ui/data-table"
+import { Switch } from "@/components/ui/switch"
+import { PAGE_SIZE } from "@/lib/constants"
+import { convertSecondstoMMSS } from "@/lib/utils"
+import type { Interview } from "@/types/database.types"
+import type { Interviewer } from "@/types/interviewer"
+import type { InterviewDetailTableResponse } from "@/types/database.types"
+import type { Analytics, CallData, FeedbackData } from "@/types/response"
+import CandidateResponseDialog from "../candidate-response"
+import CreateInterviewDialog from "../create/create-interview-dialog"
+import DeleteInterviewDialog from "./delete-interview-dialog"
+import InterviewDetailSearch from "./interview-detail-search"
+import StatusCard from "./status-card"
+import { useInterviewDetailColumns } from "./use-interview-detail-columns"
 
 interface Stats {
-  avgDuration: number;
-  completionRate: number;
-  sentimentCount: { positive: number; negative: number; neutral: number };
-  candidateStatusCount: Record<string, number>;
+  avgDuration: number
+  completionRate: number
+  sentimentCount: { positive: number; negative: number; neutral: number }
+  candidateStatusCount: Record<string, number>
 }
 
 interface InterviewDetailsClientsProps {
-  interview: Interview;
-  data: InterviewDetailTableResponse[];
-  stats: Stats;
-  interviewers: Interviewer[];
-  totalCount: number;
-  statsTotal: number;
+  interview: Interview
+  data: InterviewDetailTableResponse[]
+  stats: Stats
+  interviewers: Interviewer[]
+  totalCount: number
+  statsTotal: number
 }
 
 type ResponseDialogState = {
-  isOpen: boolean;
-  isLoading: boolean;
-  callId: string | null;
-  callData: CallData | null;
-  analytics: Analytics | null;
-  response: InterviewDetailTableResponse | null;
-  feedback: FeedbackData | null;
-};
+  isOpen: boolean
+  isLoading: boolean
+  callId: string | null
+  callData: CallData | null
+  analytics: Analytics | null
+  response: InterviewDetailTableResponse | null
+  feedback: FeedbackData | null
+}
 
 const closedDialog: ResponseDialogState = {
   isOpen: false,
@@ -62,78 +62,85 @@ const closedDialog: ResponseDialogState = {
   analytics: null,
   response: null,
   feedback: null,
-};
+}
 
-export default function InterviewDetailClient(props: InterviewDetailsClientsProps) {
-  const { interview, data, stats, interviewers, totalCount, statsTotal } = props;
-  const router = useRouter();
+export default function InterviewDetailClient(
+  props: InterviewDetailsClientsProps
+) {
+  const { interview, data, stats, interviewers, totalCount, statsTotal } = props
+  const router = useRouter()
 
-  const [editOpen, setEditOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [isActive, setIsActive] = useState<boolean>(interview.isActive ?? true);
-  const [analyzingCallId, setAnalyzingCallId] = useState<string | null>(null);
-  const [responseDialog, setResponseDialog] = useState<ResponseDialogState>(closedDialog);
-  const [searchValue, setSearchValue] = useState("");
+  const [editOpen, setEditOpen] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
+  const [isActive, setIsActive] = useState<boolean>(interview.isActive ?? true)
+  const [analyzingCallId, setAnalyzingCallId] = useState<string | null>(null)
+  const [responseDialog, setResponseDialog] =
+    useState<ResponseDialogState>(closedDialog)
+  const [searchValue, setSearchValue] = useState("")
 
   const [page, setPage] = useQueryState(
     "page",
-    parseAsInteger.withDefault(0).withOptions({ shallow: false }),
-  );
+    parseAsInteger.withDefault(0).withOptions({ shallow: false })
+  )
   const [status, setStatus] = useQueryState(
     "status",
-    parseAsString.withDefault("ALL").withOptions({ shallow: false }),
-  );
+    parseAsString.withDefault("ALL").withOptions({ shallow: false })
+  )
   const [, setSearch] = useQueryState(
     "search",
-    parseAsString.withDefault("").withOptions({ shallow: false }),
-  );
+    parseAsString.withDefault("").withOptions({ shallow: false })
+  )
 
   const pagination = useMemo<PaginationState>(
     () => ({ pageIndex: page ?? 0, pageSize: PAGE_SIZE }),
-    [page],
-  );
+    [page]
+  )
 
   const setPagination = (updater: Updater<PaginationState>) => {
-    const next = typeof updater === "function" ? updater(pagination) : updater;
-    setPage(next.pageIndex);
-  };
+    const next = typeof updater === "function" ? updater(pagination) : updater
+    setPage(next.pageIndex)
+  }
 
   const breadcrumbs = useMemo<BreadcrumbOptions[]>(
     () => [{ href: "/", label: "Interviews" }, { label: interview.name ?? "" }],
-    [interview.name],
-  );
+    [interview.name]
+  )
 
   const handleToggle = async () => {
-    const updatedIsActive = !isActive;
-    setIsActive(updatedIsActive);
-    const result = await updateInterview(interview.id, { isActive: updatedIsActive });
+    const updatedIsActive = !isActive
+    setIsActive(updatedIsActive)
+    const result = await updateInterview(interview.id, {
+      isActive: updatedIsActive,
+    })
     if (result.success) {
       toast.success("Interview status updated", {
         description: `The interview is now ${updatedIsActive ? "active" : "inactive"}.`,
         position: "bottom-right",
         duration: 3000,
-      });
-      router.refresh();
+      })
+      router.refresh()
     } else {
-      setIsActive(!updatedIsActive);
+      setIsActive(!updatedIsActive)
       toast.error("Error", {
         description: "Failed to update the interview status.",
         duration: 3000,
-      });
+      })
     }
-  };
+  }
 
-  const handleAnalyzeResponse = async (response: InterviewDetailTableResponse) => {
-    setAnalyzingCallId(response.callId);
+  const handleAnalyzeResponse = async (
+    response: InterviewDetailTableResponse
+  ) => {
+    setAnalyzingCallId(response.callId)
     try {
-      await analyzeCall(response.callId ?? "");
-      router.refresh();
+      await analyzeCall(response.callId ?? "")
+      router.refresh()
     } catch {
-      toast.error("Failed to analyze response.");
+      toast.error("Failed to analyze response.")
     } finally {
-      setAnalyzingCallId(null);
+      setAnalyzingCallId(null)
     }
-  };
+  }
 
   const handleViewResponse = async (response: InterviewDetailTableResponse) => {
     setResponseDialog({
@@ -144,50 +151,56 @@ export default function InterviewDetailClient(props: InterviewDetailsClientsProp
       analytics: null,
       response: null,
       feedback: null,
-    });
+    })
 
     if (!response.isViewed) {
-      void updateResponse({ isViewed: true }, response.callId ?? "").then(() => router.refresh());
+      void updateResponse({ isViewed: true }, response.callId ?? "").then(() =>
+        router.refresh()
+      )
     }
 
     const [callResult, respData, feedbackResult] = await Promise.all([
       getCallData(response.callId ?? ""),
       getResponseByCallIdAction(response.callId ?? ""),
       getFeedbackByInterviewIdAndEmail(interview.id, response.email ?? ""),
-    ]);
+    ])
 
     setResponseDialog((s) => ({
       ...s,
       isLoading: false,
-      callData: callResult.success ? (callResult.data?.callResponse ?? null) : null,
-      analytics: callResult.success ? (callResult.data?.analytics ?? null) : null,
+      callData: callResult.success
+        ? (callResult.data?.callResponse ?? null)
+        : null,
+      analytics: callResult.success
+        ? (callResult.data?.analytics ?? null)
+        : null,
       response: respData,
       feedback: feedbackResult ?? null,
-    }));
-  };
+    }))
+  }
 
   const handleFilterChange = (newStatus: string) => {
-    setStatus(newStatus);
-    setPage(0);
-  };
+    setStatus(newStatus)
+    setPage(0)
+  }
 
   const handleSearch = () => {
-    setSearch(searchValue);
-    setPage(0);
-  };
+    setSearch(searchValue)
+    setPage(0)
+  }
 
   const handleClearSearch = () => {
-    setSearchValue("");
-    setSearch(null);
-    setStatus(null);
-    setPage(null);
-  };
+    setSearchValue("")
+    setSearch(null)
+    setStatus(null)
+    setPage(null)
+  }
 
   const columns = useInterviewDetailColumns({
     analyzingCallId,
     handleViewResponse,
     handleAnalyzeResponse,
-  });
+  })
 
   return (
     <div className="space-y-5">
@@ -195,7 +208,9 @@ export default function InterviewDetailClient(props: InterviewDetailsClientsProp
         <AppBreadcrumbs items={breadcrumbs} />
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-sm">{isActive ? "Active" : "Inactive"}</span>
+            <span className="text-sm font-semibold">
+              {isActive ? "Active" : "Inactive"}
+            </span>
             <Switch
               checked={isActive}
               className={`${isActive ? "bg-primary" : "bg-input"}`}
@@ -249,8 +264,8 @@ export default function InterviewDetailClient(props: InterviewDetailsClientsProp
           onFilterStatusChange={handleFilterChange}
           searchValue={searchValue}
           onSearchValueChange={(val) => {
-            setSearchValue(val);
-            if (!val) handleClearSearch();
+            setSearchValue(val)
+            if (!val) handleClearSearch()
           }}
           onSearch={handleSearch}
           onClearSearch={handleClearSearch}
@@ -309,5 +324,5 @@ export default function InterviewDetailClient(props: InterviewDetailsClientsProp
         />
       )}
     </div>
-  );
+  )
 }

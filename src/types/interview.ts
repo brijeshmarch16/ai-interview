@@ -1,4 +1,4 @@
 export interface Question {
-  question: string;
-  followUpCount: number;
+  question: string
+  followUpCount: number
 }

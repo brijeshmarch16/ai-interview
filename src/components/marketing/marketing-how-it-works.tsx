@@ -1,5 +1,5 @@
-import { FileText, Link2, Mic, Search } from "lucide-react";
-import { Card, CardContent } from "../ui/card";
+import { FileText, Link2, Mic, Search } from "lucide-react"
+import { Card, CardContent } from "../ui/card"
 
 const steps = [
   {
@@ -30,16 +30,16 @@ const steps = [
     description:
       "Get a scorecard covering communication skills, technical fit, and overall impression. Ready minutes after the call ends.",
   },
-];
+]
 
 export default function MarketingHowItWorks() {
   return (
     <section className="py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-6">
-        <p className="mb-4 font-semibold text-muted-foreground text-xs uppercase tracking-widest">
+        <p className="mb-4 text-xs font-semibold tracking-widest text-muted-foreground uppercase">
           How it works
         </p>
-        <h2 className="mb-12 font-extrabold text-3xl tracking-tight sm:text-4xl">
+        <h2 className="mb-12 text-3xl font-extrabold tracking-tight sm:text-4xl">
           From job description to interview insights in minutes.
         </h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -50,17 +50,19 @@ export default function MarketingHowItWorks() {
                   <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
                     <step.icon size={20} className="text-primary" />
                   </div>
-                  <span className="font-extrabold text-3xl text-muted-foreground/50">
+                  <span className="text-3xl font-extrabold text-muted-foreground/50">
                     {step.number}
                   </span>
                 </div>
-                <h3 className="mb-1 font-semibold text-base">{step.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{step.description}</p>
+                <h3 className="mb-1 text-base font-semibold">{step.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {step.description}
+                </p>
               </CardContent>
             </Card>
           ))}
         </div>
       </div>
     </section>
-  );
+  )
 }

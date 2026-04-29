@@ -1,8 +1,8 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { toast } from "sonner";
-import { deleteInterview } from "@/actions/interviews";
+import { useState } from "react"
+import { toast } from "sonner"
+import { deleteInterview } from "@/actions/interviews"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,32 +12,34 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from "@/components/ui/alert-dialog"
 
 interface DeleteInterviewDialogProps {
-  open: boolean;
-  onClose: () => void;
-  interviewId: string;
-  interviewName: string;
-  onDeleted: () => void;
+  open: boolean
+  onClose: () => void
+  interviewId: string
+  interviewName: string
+  onDeleted: () => void
 }
 
-export default function DeleteInterviewDialog(props: DeleteInterviewDialogProps) {
-  const { open, onClose, interviewId, interviewName, onDeleted } = props;
-  const [isDeleting, setIsDeleting] = useState(false);
+export default function DeleteInterviewDialog(
+  props: DeleteInterviewDialogProps
+) {
+  const { open, onClose, interviewId, interviewName, onDeleted } = props
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const handleDelete = async () => {
-    setIsDeleting(true);
-    const result = await deleteInterview(interviewId);
-    setIsDeleting(false);
+    setIsDeleting(true)
+    const result = await deleteInterview(interviewId)
+    setIsDeleting(false)
 
     if (result.success) {
-      onDeleted();
+      onDeleted()
     } else {
-      toast.error("Failed to delete interview. Please try again.");
-      onClose();
+      toast.error("Failed to delete interview. Please try again.")
+      onClose()
     }
-  };
+  }
 
   return (
     <AlertDialog open={open} onOpenChange={onClose}>
@@ -52,11 +54,15 @@ export default function DeleteInterviewDialog(props: DeleteInterviewDialogProps)
           <AlertDialogCancel disabled={isDeleting} onClick={onClose}>
             Cancel
           </AlertDialogCancel>
-          <AlertDialogAction variant="destructive" disabled={isDeleting} onClick={handleDelete}>
+          <AlertDialogAction
+            variant="destructive"
+            disabled={isDeleting}
+            onClick={handleDelete}
+          >
             {isDeleting ? "Deleting..." : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
+  )
 }

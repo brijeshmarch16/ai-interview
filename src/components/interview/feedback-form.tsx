@@ -1,13 +1,19 @@
-"use client";
+"use client"
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm, useWatch } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-import type { FeedbackData } from "@/types/response";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Controller, useForm, useWatch } from "react-hook-form"
+import { z } from "zod"
+import { Button } from "@/components/ui/button"
+import {
+  Field,
+  FieldContent,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field"
+import { Textarea } from "@/components/ui/textarea"
+import { cn } from "@/lib/utils"
+import type { FeedbackData } from "@/types/response"
 
 enum SatisfactionLevel {
   Positive = "😀",
@@ -19,7 +25,7 @@ const SATISFACTION_LABELS: Record<SatisfactionLevel, string> = {
   [SatisfactionLevel.Positive]: "Great",
   [SatisfactionLevel.Moderate]: "Okay",
   [SatisfactionLevel.Negative]: "Poor",
-};
+}
 
 const formSchema = z
   .object({
@@ -29,13 +35,13 @@ const formSchema = z
   .refine((d) => d.satisfaction !== null || d.feedback.trim().length > 0, {
     message: "Please select a rating or add feedback",
     path: ["satisfaction"],
-  });
+  })
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<typeof formSchema>
 
 interface FeedbackFormProps {
-  onSubmit: (data: Omit<FeedbackData, "interview_id">) => void;
-  email: string;
+  onSubmit: (data: Omit<FeedbackData, "interview_id">) => void
+  email: string
 }
 
 export default function FeedbackForm({ onSubmit, email }: FeedbackFormProps) {
@@ -45,26 +51,33 @@ export default function FeedbackForm({ onSubmit, email }: FeedbackFormProps) {
       satisfaction: SatisfactionLevel.Positive,
       feedback: "",
     },
-  });
+  })
 
-  const satisfaction = useWatch({ control, name: "satisfaction" });
+  const satisfaction = useWatch({ control, name: "satisfaction" })
 
   const handleFormSubmit = (values: FormValues) => {
     onSubmit({
       satisfaction: Object.values(SatisfactionLevel).indexOf(
-        values.satisfaction as SatisfactionLevel,
+        values.satisfaction as SatisfactionLevel
       ),
       feedback: values.feedback,
       email,
-    });
-  };
+    })
+  }
 
   return (
-    <form className="flex flex-col gap-6 p-2 sm:p-4" onSubmit={handleSubmit(handleFormSubmit)}>
+    <form
+      className="flex flex-col gap-6 p-2 sm:p-4"
+      onSubmit={handleSubmit(handleFormSubmit)}
+    >
       {/* Header */}
       <div className="space-y-1">
-        <h2 className="font-semibold text-lg tracking-tight">Share your experience</h2>
-        <p className="text-muted-foreground text-sm">How satisfied are you with the platform?</p>
+        <h2 className="text-lg font-semibold tracking-tight">
+          Share your experience
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          How satisfied are you with the platform?
+        </p>
       </div>
 
       <FieldGroup>
@@ -73,19 +86,21 @@ export default function FeedbackForm({ onSubmit, email }: FeedbackFormProps) {
           <FieldContent>
             <div className="flex items-center justify-around gap-2 rounded-xl border bg-muted/40 p-3 sm:gap-4 sm:p-4">
               {Object.values(SatisfactionLevel).map((emoji) => {
-                const isSelected = satisfaction === emoji;
+                const isSelected = satisfaction === emoji
                 return (
                   <button
                     type="button"
                     key={emoji}
-                    onClick={() => setValue("satisfaction", emoji, { shouldValidate: true })}
+                    onClick={() =>
+                      setValue("satisfaction", emoji, { shouldValidate: true })
+                    }
                     className={cn(
                       "flex flex-1 flex-col items-center gap-1.5 rounded-lg px-2 py-3 transition-all duration-200",
                       "hover:bg-background hover:shadow-sm",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+                      "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none",
                       isSelected
                         ? "scale-105 bg-background shadow-sm ring-2 ring-primary"
-                        : "opacity-60 hover:opacity-100",
+                        : "opacity-60 hover:opacity-100"
                     )}
                     aria-pressed={isSelected}
                     aria-label={SATISFACTION_LABELS[emoji]}
@@ -93,21 +108,21 @@ export default function FeedbackForm({ onSubmit, email }: FeedbackFormProps) {
                     <span
                       className={cn(
                         "text-3xl transition-transform duration-200 sm:text-4xl",
-                        isSelected && "scale-110",
+                        isSelected && "scale-110"
                       )}
                     >
                       {emoji}
                     </span>
                     <span
                       className={cn(
-                        "font-medium text-xs transition-colors duration-200",
-                        isSelected ? "text-primary" : "text-muted-foreground",
+                        "text-xs font-medium transition-colors duration-200",
+                        isSelected ? "text-primary" : "text-muted-foreground"
                       )}
                     >
                       {SATISFACTION_LABELS[emoji]}
                     </span>
                   </button>
-                );
+                )
               })}
             </div>
           </FieldContent>
@@ -124,7 +139,9 @@ export default function FeedbackForm({ onSubmit, email }: FeedbackFormProps) {
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="feedback">
                 Additional feedback{" "}
-                <span className="font-normal text-muted-foreground">(optional)</span>
+                <span className="font-normal text-muted-foreground">
+                  (optional)
+                </span>
               </FieldLabel>
               <FieldContent>
                 <Textarea
@@ -145,5 +162,5 @@ export default function FeedbackForm({ onSubmit, email }: FeedbackFormProps) {
         Submit Feedback
       </Button>
     </form>
-  );
+  )
 }

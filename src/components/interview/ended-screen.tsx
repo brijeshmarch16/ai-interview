@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   AlertDialog,
@@ -7,19 +7,19 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import type { FeedbackData } from "@/types/response";
-import FeedbackForm from "./feedback-form";
-import { ScreenStatusCard } from "./screen-status-card";
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import type { FeedbackData } from "@/types/response"
+import FeedbackForm from "./feedback-form"
+import { ScreenStatusCard } from "./screen-status-card"
 
 interface EndedScreenProps {
-  isStarted: boolean;
-  email: string;
-  isFeedbackSubmitted: boolean;
-  isDialogOpen: boolean;
-  onDialogOpenChange: (open: boolean) => void;
-  onFeedbackSubmit: (data: Omit<FeedbackData, "interview_id">) => void;
+  isStarted: boolean
+  email: string
+  isFeedbackSubmitted: boolean
+  isDialogOpen: boolean
+  onDialogOpenChange: (open: boolean) => void
+  onFeedbackSubmit: (data: Omit<FeedbackData, "interview_id">) => void
 }
 
 export default function EndedScreen(props: EndedScreenProps) {
@@ -30,7 +30,7 @@ export default function EndedScreen(props: EndedScreenProps) {
     isDialogOpen,
     onDialogOpenChange,
     onFeedbackSubmit,
-  } = props;
+  } = props
   return (
     <ScreenStatusCard
       title={
@@ -59,5 +59,5 @@ export default function EndedScreen(props: EndedScreenProps) {
         </AlertDialog>
       )}
     </ScreenStatusCard>
-  );
+  )
 }

@@ -1,10 +1,10 @@
 export const SYSTEM_PROMPT = `You are an expert in analyzing communication skills from interview transcripts. Your task is to:
 1. Analyze the communication skills demonstrated in the transcript
 2. Identify specific quotes that support your analysis
-3. Provide a detailed breakdown of strengths and areas for improvement`;
+3. Provide a detailed breakdown of strengths and areas for improvement`
 
 export const getCommunicationAnalysisPrompt = (
-  transcript: string,
+  transcript: string
 ) => `Analyze the communication skills demonstrated in the following interview transcript:
 
 Transcript: ${transcript}
@@ -22,4 +22,4 @@ Please provide your analysis in the following JSON format:
   ],
   "strengths": [string],       // List of communication strengths demonstrated
   "improvementAreas": [string] // List of areas where communication could be improved
-}`;
+}`

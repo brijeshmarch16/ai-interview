@@ -1,32 +1,34 @@
-"use client";
+"use client"
 
-import { Check, SlidersHorizontal } from "lucide-react";
-import AppSearch from "@/components/ui/app-search";
-import { Button } from "@/components/ui/button";
+import { Check, SlidersHorizontal } from "lucide-react"
+import AppSearch from "@/components/ui/app-search"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { CANDIDATE_STATUS_OPTIONS } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+} from "@/components/ui/dropdown-menu"
+import { CANDIDATE_STATUS_OPTIONS } from "@/lib/constants"
+import { cn } from "@/lib/utils"
 
 const STATUS_OPTIONS = [
   { value: "ALL", label: "All", dot: "", badge: "" },
   ...CANDIDATE_STATUS_OPTIONS,
-];
+]
 
 interface InterviewDetailSearchProps {
-  filterStatus: string;
-  onFilterStatusChange: (value: string) => void;
-  searchValue: string;
-  onSearchValueChange: (value: string) => void;
-  onSearch: () => void;
-  onClearSearch: () => void;
+  filterStatus: string
+  onFilterStatusChange: (value: string) => void
+  searchValue: string
+  onSearchValueChange: (value: string) => void
+  onSearch: () => void
+  onClearSearch: () => void
 }
 
-export default function InterviewDetailSearch(props: InterviewDetailSearchProps) {
+export default function InterviewDetailSearch(
+  props: InterviewDetailSearchProps
+) {
   const {
     filterStatus,
     onFilterStatusChange,
@@ -34,9 +36,10 @@ export default function InterviewDetailSearch(props: InterviewDetailSearchProps)
     onSearchValueChange,
     onSearch,
     onClearSearch,
-  } = props;
-  const hasActiveFilter = filterStatus !== "ALL" || searchValue;
-  const selectedLabel = STATUS_OPTIONS.find((o) => o.value === filterStatus)?.label ?? "All";
+  } = props
+  const hasActiveFilter = filterStatus !== "ALL" || searchValue
+  const selectedLabel =
+    STATUS_OPTIONS.find((o) => o.value === filterStatus)?.label ?? "All"
 
   return (
     <div className="mb-3 flex w-full items-center gap-2">
@@ -59,9 +62,14 @@ export default function InterviewDetailSearch(props: InterviewDetailSearchProps)
               onSelect={() => onFilterStatusChange(opt.value)}
             >
               <Check
-                className={cn("h-4 w-4", filterStatus === opt.value ? "opacity-100" : "opacity-0")}
+                className={cn(
+                  "h-4 w-4",
+                  filterStatus === opt.value ? "opacity-100" : "opacity-0"
+                )}
               />
-              {opt.dot && <div className={`h-2 w-2 shrink-0 rounded-full ${opt.dot}`} />}
+              {opt.dot && (
+                <div className={`h-2 w-2 shrink-0 rounded-full ${opt.dot}`} />
+              )}
               {opt.label}
             </DropdownMenuItem>
           ))}
@@ -76,10 +84,14 @@ export default function InterviewDetailSearch(props: InterviewDetailSearchProps)
         isDisabledButton={!searchValue}
       />
       {hasActiveFilter && (
-        <Button variant="outline" onClick={onClearSearch} className="shrink-0 text-xs">
+        <Button
+          variant="outline"
+          onClick={onClearSearch}
+          className="shrink-0 text-xs"
+        >
           Reset
         </Button>
       )}
     </div>
-  );
+  )
 }

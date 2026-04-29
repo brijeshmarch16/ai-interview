@@ -1,10 +1,10 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import type { Analytics, CallData } from "@/types/response";
-import { CircularProgress } from "./circular-progress";
+import { Skeleton } from "@/components/ui/skeleton"
+import type { Analytics, CallData } from "@/types/response"
+import { CircularProgress } from "./circular-progress"
 
 interface GeneralSummaryProps {
-  analytics: Analytics | null;
-  callData: CallData | null;
+  analytics: Analytics | null
+  callData: CallData | null
 }
 
 export function GeneralSummary({ analytics, callData }: GeneralSummaryProps) {
@@ -16,8 +16,13 @@ export function GeneralSummary({ analytics, callData }: GeneralSummaryProps) {
         {analytics?.overallScore !== undefined && (
           <div className="flex flex-col gap-3 rounded-lg bg-card p-4 text-sm">
             <div className="flex flex-row gap-2 align-middle">
-              <CircularProgress value={analytics?.overallScore} showValueLabel={true} />
-              <p className="my-auto font-medium text-xl">Overall Hiring Score</p>
+              <CircularProgress
+                value={analytics?.overallScore}
+                showValueLabel={true}
+              />
+              <p className="my-auto text-xl font-medium">
+                Overall Hiring Score
+              </p>
             </div>
             <div className="">
               <div className="font-medium">
@@ -46,7 +51,7 @@ export function GeneralSummary({ analytics, callData }: GeneralSummaryProps) {
                   </div>
                 }
               />
-              <p className="my-auto font-medium text-xl">Communication</p>
+              <p className="my-auto text-xl font-medium">Communication</p>
             </div>
             <div className="font-medium">
               <span className="font-normal">Feedback: </span>
@@ -94,10 +99,12 @@ export function GeneralSummary({ analytics, callData }: GeneralSummaryProps) {
                 )}
               </div>
             </div>
-            <p className="font-medium">{callData?.call_analysis?.call_completion_rating_reason}</p>
+            <p className="font-medium">
+              {callData?.call_analysis?.call_completion_rating_reason}
+            </p>
           </div>
         )}
       </div>
     </div>
-  );
+  )
 }

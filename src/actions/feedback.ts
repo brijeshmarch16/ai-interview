@@ -1,9 +1,9 @@
-"use server";
+"use server"
 
-import { getFeedbackByInterviewIdAndEmail } from "@/lib/data/feedback";
-import { db } from "@/lib/db";
-import { feedback } from "@/lib/db/schema";
-import type { FeedbackData } from "@/types/response";
+import { getFeedbackByInterviewIdAndEmail } from "@/lib/data/feedback"
+import { db } from "@/lib/db"
+import { feedback } from "@/lib/db/schema"
+import type { FeedbackData } from "@/types/response"
 
 // ─── Mutations ────────────────────────────────────────────────────────────────
 
@@ -16,15 +16,15 @@ export const createFeedback = async (feedbackData: FeedbackData) => {
       feedbackText: feedbackData.feedback,
       email: feedbackData.email,
     })
-    .returning();
+    .returning()
 
   if (!created) {
-    throw new Error("Failed to submit feedback");
+    throw new Error("Failed to submit feedback")
   }
 
-  return created;
-};
+  return created
+}
 
 // ─── Re-exports from DAL (callable by client components as server actions) ────
 
-export { getFeedbackByInterviewIdAndEmail };
+export { getFeedbackByInterviewIdAndEmail }

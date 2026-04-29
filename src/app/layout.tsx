@@ -1,15 +1,15 @@
-import { Analytics } from "@vercel/analytics/next";
-import { GeistSans } from "geist/font/sans";
-import type { Metadata } from "next";
-import Providers from "@/components/providers";
-import { Toaster } from "@/components/ui/sonner";
-import { createMetadata } from "@/lib/metadata";
-import { cn } from "@/lib/utils";
-import "./globals.css";
-import { Inter } from "next/font/google";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { Analytics } from "@vercel/analytics/next"
+import { GeistSans } from "geist/font/sans"
+import type { Metadata } from "next"
+import Providers from "@/components/providers"
+import { Toaster } from "@/components/ui/sonner"
+import { createMetadata } from "@/lib/metadata"
+import { cn } from "@/lib/utils"
+import "./globals.css"
+import { Inter } from "next/font/google"
+import { TooltipProvider } from "@/components/ui/tooltip"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
 export const metadata: Metadata = createMetadata({
   title: "AI Interview",
@@ -22,11 +22,15 @@ export const metadata: Metadata = createMetadata({
         google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
       },
     }),
-});
+})
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" suppressHydrationWarning className={cn("font-sans", inter.variable)}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={cn("font-sans", inter.variable)}
+    >
       <body className={cn(GeistSans.className, "min-h-screen antialiased")}>
         <Providers>
           <TooltipProvider>
@@ -37,5 +41,5 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Analytics />
       </body>
     </html>
-  );
+  )
 }

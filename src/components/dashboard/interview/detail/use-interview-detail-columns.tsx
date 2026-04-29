@@ -1,17 +1,17 @@
-"use client";
+"use client"
 
-import type { ColumnDef } from "@tanstack/react-table";
-import { useMemo } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { convertSecondstoMMSS, formatTimestampToDateHHMM } from "@/lib/utils";
-import type { InterviewDetailTableResponse } from "@/types/database.types";
-import CandidateStatusDropdown from "../candidate-response/candidate-status-dropdown";
+import type { ColumnDef } from "@tanstack/react-table"
+import { useMemo } from "react"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { convertSecondstoMMSS, formatTimestampToDateHHMM } from "@/lib/utils"
+import type { InterviewDetailTableResponse } from "@/types/database.types"
+import CandidateStatusDropdown from "../candidate-response/candidate-status-dropdown"
 
 interface UseInterviewDetailColumnsParams {
-  analyzingCallId: string | null;
-  handleViewResponse: (response: InterviewDetailTableResponse) => void;
-  handleAnalyzeResponse: (response: InterviewDetailTableResponse) => void;
+  analyzingCallId: string | null
+  handleViewResponse: (response: InterviewDetailTableResponse) => void
+  handleAnalyzeResponse: (response: InterviewDetailTableResponse) => void
 }
 
 export function useInterviewDetailColumns({
@@ -35,12 +35,12 @@ export function useInterviewDetailColumns({
         header: "Overall Score",
         accessorKey: "analytics.overallScore",
         cell: ({ row }) => {
-          const score = row.original.analytics?.overallScore;
+          const score = row.original.analytics?.overallScore
           return score != null ? (
             <Badge className="size-7 bg-primary/20 text-primary">{score}</Badge>
           ) : (
             "—"
-          );
+          )
         },
         meta: {
           headerAlign: "center",
@@ -51,12 +51,14 @@ export function useInterviewDetailColumns({
         header: "Communication",
         accessorKey: "analytics.communication.score",
         cell: ({ row }) => {
-          const score = row.original.analytics?.communication?.score;
+          const score = row.original.analytics?.communication?.score
           return score != null ? (
-            <Badge className="size-7 bg-muted-foreground/30 text-foreground">{score}</Badge>
+            <Badge className="size-7 bg-muted-foreground/30 text-foreground">
+              {score}
+            </Badge>
           ) : (
             "—"
-          );
+          )
         },
         meta: {
           headerAlign: "center",
@@ -66,7 +68,8 @@ export function useInterviewDetailColumns({
       {
         header: "Date",
         accessorKey: "createdAt",
-        cell: ({ row }) => formatTimestampToDateHHMM(String(row.original.createdAt)),
+        cell: ({ row }) =>
+          formatTimestampToDateHHMM(String(row.original.createdAt)),
         meta: {
           headerAlign: "center",
           bodyAlign: "center",
@@ -85,8 +88,8 @@ export function useInterviewDetailColumns({
         header: "Tab Switches",
         accessorKey: "tabSwitchCount",
         cell: ({ row }) => {
-          const count = row.original.tabSwitchCount;
-          if (!count || count === 0) return "—";
+          const count = row.original.tabSwitchCount
+          if (!count || count === 0) return "—"
           return (
             <Badge
               variant="outline"
@@ -94,7 +97,7 @@ export function useInterviewDetailColumns({
             >
               {count}
             </Badge>
-          );
+          )
         },
         meta: {
           headerAlign: "center",
@@ -137,7 +140,9 @@ export function useInterviewDetailColumns({
                 onClick={() => handleAnalyzeResponse(row.original)}
                 disabled={analyzingCallId === row.original.callId}
               >
-                {analyzingCallId === row.original.callId ? "Analyzing..." : "Analyze"}
+                {analyzingCallId === row.original.callId
+                  ? "Analyzing..."
+                  : "Analyze"}
               </Button>
             )}
           </div>
@@ -146,6 +151,6 @@ export function useInterviewDetailColumns({
           headerAlign: "center",
         },
       },
-    ];
-  }, [analyzingCallId, handleViewResponse, handleAnalyzeResponse]);
+    ]
+  }, [analyzingCallId, handleViewResponse, handleAnalyzeResponse])
 }

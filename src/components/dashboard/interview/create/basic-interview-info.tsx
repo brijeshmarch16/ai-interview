@@ -1,29 +1,35 @@
-"use client";
+"use client"
 
-import Image from "next/image";
-import { useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { CardTitle } from "@/components/ui/card";
-import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import type { Interviewer } from "@/types/interviewer";
-import type { FormValues } from "./create-interview-dialog";
-import FileUpload from "./file-upload";
+import Image from "next/image"
+import { useState } from "react"
+import { Controller, useFormContext } from "react-hook-form"
+import { Button } from "@/components/ui/button"
+import { CardTitle } from "@/components/ui/card"
+import {
+  Field,
+  FieldContent,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import type { Interviewer } from "@/types/interviewer"
+import type { FormValues } from "./create-interview-dialog"
+import FileUpload from "./file-upload"
 
 interface BasicInterviewInfoProps {
-  interviewers: Interviewer[];
-  mode: "create" | "edit";
-  onManual: () => void;
-  onGenerate: (documentContext: string) => void;
+  interviewers: Interviewer[]
+  mode: "create" | "edit"
+  onManual: () => void
+  onGenerate: (documentContext: string) => void
 }
 
 export default function BasicInterviewInfo(props: BasicInterviewInfoProps) {
-  const { interviewers, mode = "create", onManual, onGenerate } = props;
-  const { control } = useFormContext<FormValues>();
+  const { interviewers, mode = "create", onManual, onGenerate } = props
+  const { control } = useFormContext<FormValues>()
 
-  const [documentContext, setDocumentContext] = useState("");
+  const [documentContext, setDocumentContext] = useState("")
 
   return (
     <div className="px-3">
@@ -52,7 +58,9 @@ export default function BasicInterviewInfo(props: BasicInterviewInfoProps) {
           control={control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Objective of Interview</FieldLabel>
+              <FieldLabel htmlFor={field.name}>
+                Objective of Interview
+              </FieldLabel>
               <FieldContent>
                 <Textarea
                   {...field}
@@ -74,7 +82,7 @@ export default function BasicInterviewInfo(props: BasicInterviewInfoProps) {
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={field.name}>
                 Interview Description
-                <span className="mt-0.5 block font-light text-muted-foreground text-xs italic">
+                <span className="mt-0.5 block text-xs font-light text-muted-foreground italic">
                   Note: Interviewees will see this description.
                 </span>
               </FieldLabel>
@@ -98,8 +106,13 @@ export default function BasicInterviewInfo(props: BasicInterviewInfoProps) {
             name="numQuestions"
             control={control}
             render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid} className="min-w-35 flex-1">
-                <FieldLabel htmlFor={field.name}>Number of Questions (Max 05)</FieldLabel>
+              <Field
+                data-invalid={fieldState.invalid}
+                className="min-w-35 flex-1"
+              >
+                <FieldLabel htmlFor={field.name}>
+                  Number of Questions (Max 05)
+                </FieldLabel>
                 <FieldContent>
                   <Input
                     {...field}
@@ -112,15 +125,20 @@ export default function BasicInterviewInfo(props: BasicInterviewInfoProps) {
                     placeholder="e.g. 3"
                     value={field.value ?? ""}
                     onChange={(e) => {
-                      let value = e.target.value;
-                      if (value === "" || (Number.isInteger(Number(value)) && Number(value) > 0)) {
-                        if (Number(value) > 5) value = "5";
-                        field.onChange(value === "" ? undefined : Number(value));
+                      let value = e.target.value
+                      if (
+                        value === "" ||
+                        (Number.isInteger(Number(value)) && Number(value) > 0)
+                      ) {
+                        if (Number(value) > 5) value = "5"
+                        field.onChange(value === "" ? undefined : Number(value))
                       }
                     }}
                   />
                 </FieldContent>
-                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
               </Field>
             )}
           />
@@ -128,8 +146,13 @@ export default function BasicInterviewInfo(props: BasicInterviewInfoProps) {
             name="duration"
             control={control}
             render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid} className="min-w-35 flex-1">
-                <FieldLabel htmlFor={field.name}>Duration (Max 15 Minutes)</FieldLabel>
+              <Field
+                data-invalid={fieldState.invalid}
+                className="min-w-35 flex-1"
+              >
+                <FieldLabel htmlFor={field.name}>
+                  Duration (Max 15 Minutes)
+                </FieldLabel>
                 <FieldContent>
                   <div className="relative flex items-center">
                     <Input
@@ -144,22 +167,26 @@ export default function BasicInterviewInfo(props: BasicInterviewInfoProps) {
                       placeholder="e.g. 10"
                       value={field.value ?? ""}
                       onChange={(e) => {
-                        let value = e.target.value;
+                        let value = e.target.value
                         if (
                           value === "" ||
                           (Number.isInteger(Number(value)) && Number(value) > 0)
                         ) {
-                          if (Number(value) > 15) value = "15";
-                          field.onChange(value === "" ? undefined : Number(value));
+                          if (Number(value) > 15) value = "15"
+                          field.onChange(
+                            value === "" ? undefined : Number(value)
+                          )
                         }
                       }}
                     />
-                    <span className="pointer-events-none absolute right-3 text-muted-foreground text-sm">
+                    <span className="pointer-events-none absolute right-3 text-sm text-muted-foreground">
                       mins
                     </span>
                   </div>
                 </FieldContent>
-                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
               </Field>
             )}
           />
@@ -169,7 +196,9 @@ export default function BasicInterviewInfo(props: BasicInterviewInfoProps) {
           name="interviewerId"
           control={control}
           render={({ field, fieldState }) => {
-            const selectedInterviewer = interviewers.find((i) => i.id === field.value);
+            const selectedInterviewer = interviewers.find(
+              (i) => i.id === field.value
+            )
             return (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>Select an Interviewer</FieldLabel>
@@ -190,14 +219,16 @@ export default function BasicInterviewInfo(props: BasicInterviewInfoProps) {
                             height={50}
                             className="h-20 w-25 object-cover"
                           />
-                          <CardTitle className="text-center text-xs">{item.name}</CardTitle>
+                          <CardTitle className="text-center text-xs">
+                            {item.name}
+                          </CardTitle>
                         </Button>
                       </div>
                     ))}
                   </div>
                   {selectedInterviewer && (
                     <div className="mt-3 rounded-md border border-border bg-muted/40 p-3">
-                      <p className="mb-3 text-muted-foreground text-xs leading-relaxed">
+                      <p className="mb-3 text-xs leading-relaxed text-muted-foreground">
                         {selectedInterviewer.description}
                       </p>
                       {selectedInterviewer.audio && (
@@ -220,7 +251,9 @@ export default function BasicInterviewInfo(props: BasicInterviewInfoProps) {
                           ] as [string, number][]
                         ).map(([label, value]) => (
                           <div key={label} className="flex items-center gap-2">
-                            <span className="w-20 shrink-0 text-xs">{label}</span>
+                            <span className="w-20 shrink-0 text-xs">
+                              {label}
+                            </span>
                             <div className="h-1.5 flex-1 rounded-full bg-border">
                               <div
                                 className="h-1.5 rounded-full bg-primary"
@@ -233,9 +266,11 @@ export default function BasicInterviewInfo(props: BasicInterviewInfoProps) {
                     </div>
                   )}
                 </FieldContent>
-                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
               </Field>
-            );
+            )
           }}
         />
 
@@ -249,15 +284,28 @@ export default function BasicInterviewInfo(props: BasicInterviewInfoProps) {
 
         <Field>
           <div className="mt-1 flex w-full flex-wrap items-center justify-between gap-3">
-            <Button type="button" variant="outline" className="flex-1" onClick={onManual}>
-              {mode === "edit" ? "Edit questions manually" : "Create questions myself"}
+            <Button
+              type="button"
+              variant="outline"
+              className="flex-1"
+              onClick={onManual}
+            >
+              {mode === "edit"
+                ? "Edit questions manually"
+                : "Create questions myself"}
             </Button>
-            <Button type="button" className="flex-1" onClick={() => onGenerate(documentContext)}>
-              {mode === "edit" ? "✨ Regenerate questions" : "✨ Generate questions"}
+            <Button
+              type="button"
+              className="flex-1"
+              onClick={() => onGenerate(documentContext)}
+            >
+              {mode === "edit"
+                ? "✨ Regenerate questions"
+                : "✨ Generate questions"}
             </Button>
           </div>
         </Field>
       </FieldGroup>
     </div>
-  );
+  )
 }
