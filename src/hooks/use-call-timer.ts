@@ -12,8 +12,11 @@ export function useCallTimer(
   const [elapsedMs, setElapsedMs] = useState(0)
   const elapsedMsRef = useRef(0)
   const onTimeUpRef = useRef(onTimeUp)
-  onTimeUpRef.current = onTimeUp
   const timeUpFiredRef = useRef(false)
+
+  useEffect(() => {
+    onTimeUpRef.current = onTimeUp
+  }, [onTimeUp])
 
   useEffect(() => {
     if (!isCalling) return

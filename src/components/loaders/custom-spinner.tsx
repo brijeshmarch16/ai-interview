@@ -7,7 +7,7 @@ export function CustomSpinner() {
       <div className="space-y-2 text-center">
         <p className="text-lg font-bold text-primary">Creating Questions</p>
         <p className="max-w-sm text-sm text-muted-foreground">
-          We're creating intelligent questions based on the interview
+          We&apos;re creating intelligent questions based on the interview
           objectives. This will take few moments...
         </p>
       </div>

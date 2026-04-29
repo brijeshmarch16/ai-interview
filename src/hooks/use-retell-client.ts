@@ -16,7 +16,10 @@ export function useRetellClient(onCallEnded: () => void) {
   const [activeTurn, setActiveTurn] = useState<"agent" | "user" | "">("")
 
   const onCallEndedRef = useRef(onCallEnded)
-  onCallEndedRef.current = onCallEnded
+
+  useEffect(() => {
+    onCallEndedRef.current = onCallEnded
+  }, [onCallEnded])
 
   useEffect(() => {
     webClient.on("call_started", () => {
