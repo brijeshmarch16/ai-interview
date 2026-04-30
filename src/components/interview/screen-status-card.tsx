@@ -30,7 +30,7 @@ export function ScreenStatusCard(props: ScreenStatusCardProps) {
         <div className="text-center text-sm font-semibold">
           Powered by{" "}
           <span className="font-bold">
-            Open<span className="text-primary">Hire</span>
+            AI <span className="text-primary">Interview</span>
           </span>
         </div>
       </div>
