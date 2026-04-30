@@ -71,6 +71,8 @@ export const updateInterview = async (
       .where(eq(interview.id, id))
       .returning()
     revalidatePath("/")
+    revalidatePath(`/interviews/${id}`)
+    revalidatePath(`/call/${id}`)
     return { success: true, error: null, data: updated ?? null }
   } catch (error) {
     console.error("Error updating interview:", error)
