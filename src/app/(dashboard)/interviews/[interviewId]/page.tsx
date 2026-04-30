@@ -13,6 +13,8 @@ import {
   PAGE_SIZE,
 } from "@/lib/data/responses"
 
+export const dynamic = "force-dynamic"
+
 const searchParamsCache = createSearchParamsCache({
   page: parseAsInteger.withDefault(0),
   search: parseAsString.withDefault(""),

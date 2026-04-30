@@ -4,6 +4,8 @@ import Call from "@/components/interview"
 import { getInterviewById } from "@/lib/data/interviews"
 import { createMetadata } from "@/lib/metadata"
 
+export const dynamic = "force-dynamic"
+
 interface Props {
   params: Promise<{
     interviewId: string
