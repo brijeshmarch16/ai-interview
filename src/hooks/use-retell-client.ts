@@ -8,6 +8,11 @@ type TranscriptType = {
   content: string
 }
 
+type StartCallResult =
+  | { success: true }
+  | { success: false; error: unknown }
+
+const START_CALL_TIMEOUT_MS = 15_000
 const webClient = new RetellWebClient()
 
 export function useRetellClient(onCallEnded: () => void) {
@@ -16,6 +21,7 @@ export function useRetellClient(onCallEnded: () => void) {
   const [activeTurn, setActiveTurn] = useState<"agent" | "user" | "">("")
 
   const onCallEndedRef = useRef(onCallEnded)
+  const isStartingCallRef = useRef(false)
 
   useEffect(() => {
     onCallEndedRef.current = onCallEnded
@@ -40,6 +46,8 @@ export function useRetellClient(onCallEnded: () => void) {
     })
 
     webClient.on("error", (error) => {
+      if (isStartingCallRef.current) return
+
       console.error("An error occurred:", error)
       webClient.stopCall()
       onCallEndedRef.current()
@@ -64,8 +72,52 @@ export function useRetellClient(onCallEnded: () => void) {
     }
   }, [])
 
-  const startCall = async (accessToken: string) => {
-    await webClient.startCall({ accessToken }).catch(console.error)
+  const startCall = async (
+    accessToken: string
+  ): Promise<StartCallResult> => {
+    isStartingCallRef.current = true
+    let cleanupStartupListeners = () => {}
+    let timeoutId: ReturnType<typeof setTimeout> | undefined
+
+    const startupResult = new Promise<StartCallResult>((resolve) => {
+      const finish = (result: StartCallResult) => {
+        cleanupStartupListeners()
+        if (timeoutId) clearTimeout(timeoutId)
+        resolve(result)
+      }
+
+      const handleCallStarted = () => finish({ success: true })
+      const handleCallStartError = (error: unknown) =>
+        finish({ success: false, error })
+
+      cleanupStartupListeners = () => {
+        webClient.off("call_started", handleCallStarted)
+        webClient.off("error", handleCallStartError)
+      }
+
+      webClient.once("call_started", handleCallStarted)
+      webClient.once("error", handleCallStartError)
+
+      timeoutId = setTimeout(
+        () =>
+          finish({
+            success: false,
+            error: new Error("Timed out while starting the call."),
+          }),
+        START_CALL_TIMEOUT_MS
+      )
+    })
+
+    try {
+      await webClient.startCall({ accessToken })
+      return await startupResult
+    } catch (error) {
+      return { success: false, error }
+    } finally {
+      cleanupStartupListeners()
+      if (timeoutId) clearTimeout(timeoutId)
+      isStartingCallRef.current = false
+    }
   }
 
   const stopCall = () => {
