@@ -27,6 +27,30 @@ interface InterviewProps {
   interview: Interview
 }
 
+const MICROPHONE_ACCESS_ERROR =
+  "Microphone access is required to start the interview. Please allow microphone access and try again."
+const CALL_START_ERROR =
+  "Could not start the interview. Please check your microphone permission and try again."
+
+async function requestMicrophoneAccess() {
+  if (!navigator.mediaDevices?.getUserMedia) {
+    return {
+      success: false as const,
+      error: new Error("Microphone access is not supported in this browser."),
+    }
+  }
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+    for (const track of stream.getTracks()) {
+      track.stop()
+    }
+    return { success: true as const }
+  } catch (error) {
+    return { success: false as const, error }
+  }
+}
+
 type CallState = {
   isLoading: boolean
   isStarted: boolean
@@ -159,25 +183,37 @@ export default function Call({ interview }: InterviewProps) {
   const startConversation = async (candidateEmail: string, name: string) => {
     dispatchCall({ type: "START_LOADING" })
 
-    const data = {
-      mins: interview?.timeDuration ?? "",
-      objective: interview?.objective ?? "",
-      questions: interview?.questions?.map((q) => q.question).join(", ") ?? "",
-      name: name || "not provided",
-    }
+    try {
+      const data = {
+        mins: interview?.timeDuration ?? "",
+        objective: interview?.objective ?? "",
+        questions:
+          interview?.questions?.map((q) => q.question).join(", ") ?? "",
+        name: name || "not provided",
+      }
 
-    const emailsList = await getResponseEmailsAction(interview.id)
-    const existingEmails: string[] = emailsList.map(
-      (item: { email: string }) => item.email
-    )
-    const ineligible =
-      existingEmails.includes(candidateEmail) ||
-      (interview?.respondents &&
-        !interview?.respondents.includes(candidateEmail))
+      const emailsList = await getResponseEmailsAction(interview.id)
+      const existingEmails: string[] = emailsList.map(
+        (item: { email: string }) => item.email
+      )
+      const ineligible =
+        existingEmails.includes(candidateEmail) ||
+        (interview?.respondents &&
+          !interview?.respondents.includes(candidateEmail))
 
-    if (ineligible) {
-      dispatchCall({ type: "SET_INELIGIBLE" })
-    } else {
+      if (ineligible) {
+        dispatchCall({ type: "SET_INELIGIBLE" })
+        return
+      }
+
+      const microphoneAccess = await requestMicrophoneAccess()
+      if (!microphoneAccess.success) {
+        console.error("Failed to access microphone:", microphoneAccess.error)
+        toast.error(MICROPHONE_ACCESS_ERROR)
+        dispatchCall({ type: "STOP_LOADING" })
+        return
+      }
+
       const result = await registerCall(interview?.interviewerId ?? "", data)
 
       if (!result.success) {
@@ -189,7 +225,14 @@ export default function Call({ interview }: InterviewProps) {
       const { call_id, access_token } = result.data
 
       if (access_token) {
-        await startCall(access_token)
+        const callStartResult = await startCall(access_token)
+        if (!callStartResult.success) {
+          console.error("Failed to start call:", callStartResult.error)
+          toast.error(CALL_START_ERROR)
+          dispatchCall({ type: "STOP_LOADING" })
+          return
+        }
+
         setUserName(name)
         dispatchCall({
           type: "START_CALL",
@@ -208,9 +251,11 @@ export default function Call({ interview }: InterviewProps) {
         dispatchCall({ type: "STOP_LOADING" })
         return
       }
+    } catch (error) {
+      console.error("Failed to start conversation:", error)
+      toast.error("Unable to start the interview. Please try again.")
+      dispatchCall({ type: "STOP_LOADING" })
     }
-
-    dispatchCall({ type: "STOP_LOADING" })
   }
 
   const onEndCallClick = async () => {
