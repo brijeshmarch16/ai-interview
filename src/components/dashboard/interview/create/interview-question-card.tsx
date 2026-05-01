@@ -3,12 +3,10 @@ import { Controller, useFormContext } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
-import type { Question } from "@/types/interview"
-import type { FormValues } from "./create-interview-dialog"
+import type { InterviewQuestionsValues } from "./create-interview-questions"
 
 interface InterviewQuestionCardProps {
   questionNumber: number
-  questionData: Question
   index: number
   onDelete: (index: number) => void
 }
@@ -23,7 +21,9 @@ export default function InterviewQuestionCard(
   props: InterviewQuestionCardProps
 ) {
   const { questionNumber, index, onDelete } = props
-  const { control } = useFormContext<FormValues>()
+  const { control } = useFormContext<{
+    questions: InterviewQuestionsValues
+  }>()
 
   return (
     <Card>

@@ -1,10 +1,7 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
 import { useState, useTransition } from "react"
-import { FormProvider, useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { z } from "zod"
 import { createInterview, updateInterview } from "@/actions/interviews"
 import { CustomSpinner } from "@/components/loaders/custom-spinner"
 import {
@@ -17,33 +14,13 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area"
 import type { Question } from "@/types/interview"
 import type { Interviewer } from "@/types/interviewer"
-import BasicInterviewInfo from "./basic-interview-info"
-import CreateInterviewQuestions from "./create-interview-questions"
-
-const schema = z.object({
-  name: z.string().min(1, "Interview name is required"),
-  objective: z.string().min(1, "Objective is required"),
-  numQuestions: z.number().int().min(1).max(5),
-  duration: z.number().int().min(1).max(15),
-  interviewerId: z.string().min(1, "Please select an interviewer"),
-  description: z.string().min(1, "Description is required"),
-  questions: z.array(
-    z.object({
-      question: z.string().min(1, "Question is required"),
-      followUpCount: z.number().int().min(1).max(3),
-    })
-  ),
-})
-
-export type FormValues = z.infer<typeof schema>
-
-const STEP1_FIELDS = [
-  "name",
-  "objective",
-  "numQuestions",
-  "duration",
-  "interviewerId",
-] as const
+import BasicInterviewInfo, {
+  type BasicInterviewInfoDefaultValues,
+  type BasicInterviewInfoValues,
+} from "./basic-interview-info"
+import CreateInterviewQuestions, {
+  type InterviewQuestionsValues,
+} from "./create-interview-questions"
 
 interface CreateInterviewDialogProps {
   open: boolean
@@ -70,44 +47,40 @@ export default function CreateInterviewDialog(
   const [step, setStep] = useState<1 | 2>(1)
   const [isGenerating, setIsGenerating] = useState(false)
   const [isPending, startTransition] = useTransition()
-
-  const form = useForm<FormValues, unknown, FormValues>({
-    resolver: zodResolver(schema),
-    mode: "onChange",
-    defaultValues: {
+  const [basicInfo, setBasicInfo] = useState<BasicInterviewInfoDefaultValues>(
+    () => ({
       name: initialData?.name ?? "",
       objective: initialData?.objective ?? "",
-      numQuestions: initialData?.questionCount ?? undefined,
+      numQuestions: initialData?.questionCount || undefined,
       duration: initialData?.timeDuration
         ? Number(initialData.timeDuration)
         : undefined,
       interviewerId: initialData?.interviewerId ?? "",
       description: initialData?.description ?? "",
-      questions: initialData?.questions?.length
-        ? initialData.questions
-        : [{ question: "", followUpCount: 1 }],
-    },
-  })
+    })
+  )
+  const [questions, setQuestions] = useState<InterviewQuestionsValues>(() =>
+    initialData?.questions?.length
+      ? initialData.questions
+      : [{ question: "", followUpCount: 1 }]
+  )
 
-  const goToStep2WithManual = async () => {
-    const valid = await form.trigger(STEP1_FIELDS)
-    if (!valid) return
-
-    // In edit mode with existing questions, keep them; otherwise start with one empty question
-    const existing = form.getValues("questions")
-    if (!existing.length || mode === "create") {
-      form.setValue("questions", [{ question: "", followUpCount: 1 }])
-    }
+  const goToStep2WithManual = (values: BasicInterviewInfoValues) => {
+    setBasicInfo(values)
+    setQuestions((currentQuestions) =>
+      currentQuestions.length
+        ? currentQuestions
+        : [{ question: "", followUpCount: 1 }]
+    )
     setStep(2)
   }
 
-  const goToStep2WithGenerate = async (documentContext: string) => {
-    const valid = await form.trigger(STEP1_FIELDS)
-    if (!valid) return
-
+  const goToStep2WithGenerate = async (
+    values: BasicInterviewInfoValues,
+    documentContext: string
+  ) => {
     setIsGenerating(true)
     try {
-      const values = form.getValues()
       const response = await fetch("/api/generate-interview-questions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -127,8 +100,8 @@ export default function CreateInterviewDialog(
         followUpCount: 1,
       }))
 
-      form.setValue("questions", questions)
-      form.setValue("description", generated.description)
+      setBasicInfo({ ...values, description: generated.description })
+      setQuestions(questions)
       setStep(2)
     } catch {
       toast.error("Failed to generate questions. Please try again.")
@@ -137,18 +110,32 @@ export default function CreateInterviewDialog(
     }
   }
 
-  const onSubmit = (values: FormValues) => {
+  const handleBack = (nextQuestions: InterviewQuestionsValues) => {
+    setQuestions(nextQuestions)
+    setStep(1)
+  }
+
+  const handleSaveQuestions = (nextQuestions: InterviewQuestionsValues) => {
+    setQuestions(nextQuestions)
     startTransition(async () => {
+      if (!basicInfo.numQuestions || !basicInfo.duration) {
+        toast.error("Please complete the basic interview information.")
+        setStep(1)
+        return
+      }
+
+      const payload = {
+        name: basicInfo.name,
+        objective: basicInfo.objective,
+        description: basicInfo.description,
+        questions: nextQuestions,
+        interviewerId: basicInfo.interviewerId,
+        questionCount: basicInfo.numQuestions,
+        timeDuration: String(basicInfo.duration),
+      }
+
       if (mode === "edit" && initialData?.id) {
-        const result = await updateInterview(initialData.id, {
-          name: values.name,
-          objective: values.objective,
-          description: values.description,
-          questions: values.questions,
-          interviewerId: values.interviewerId,
-          questionCount: values.numQuestions,
-          timeDuration: String(values.duration),
-        })
+        const result = await updateInterview(initialData.id, payload)
 
         if (!result.success) {
           toast.error(result.error)
@@ -157,15 +144,7 @@ export default function CreateInterviewDialog(
 
         toast.success("Interview updated successfully.")
       } else {
-        const result = await createInterview({
-          name: values.name,
-          objective: values.objective,
-          description: values.description,
-          questions: values.questions,
-          interviewerId: values.interviewerId,
-          questionCount: values.numQuestions,
-          timeDuration: String(values.duration),
-        })
+        const result = await createInterview(payload)
 
         if (!result.success) {
           toast.error(result.error)
@@ -190,30 +169,29 @@ export default function CreateInterviewDialog(
           <DialogDescription />
         </DialogHeader>
 
-        <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            {isGenerating ? (
-              <CustomSpinner />
-            ) : step === 1 ? (
-              <ScrollArea className="max-h-[80dvh] *:data-[slot='scroll-area-viewport']:max-h-[80dvh]">
-                <BasicInterviewInfo
-                  interviewers={interviewers}
-                  mode={mode}
-                  onManual={goToStep2WithManual}
-                  onGenerate={goToStep2WithGenerate}
-                />
-              </ScrollArea>
-            ) : (
-              <ScrollArea className="max-h-[80dvh] *:data-[slot='scroll-area-viewport']:max-h-[80dvh]">
-                <CreateInterviewQuestions
-                  questionCount={form.watch("numQuestions")}
-                  onBack={() => setStep(1)}
-                  isSaving={isPending}
-                />
-              </ScrollArea>
-            )}
-          </form>
-        </FormProvider>
+        {isGenerating ? (
+          <CustomSpinner />
+        ) : step === 1 ? (
+          <ScrollArea className="max-h-[80dvh] *:data-[slot='scroll-area-viewport']:max-h-[80dvh]">
+            <BasicInterviewInfo
+              interviewers={interviewers}
+              mode={mode}
+              defaultValues={basicInfo}
+              onManual={goToStep2WithManual}
+              onGenerate={goToStep2WithGenerate}
+            />
+          </ScrollArea>
+        ) : (
+          <ScrollArea className="max-h-[80dvh] *:data-[slot='scroll-area-viewport']:max-h-[80dvh]">
+            <CreateInterviewQuestions
+              questionCount={basicInfo.numQuestions ?? 0}
+              questions={questions}
+              onBack={handleBack}
+              onSave={handleSaveQuestions}
+              isSaving={isPending}
+            />
+          </ScrollArea>
+        )}
       </DialogContent>
     </Dialog>
   )
