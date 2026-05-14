@@ -16,12 +16,6 @@ export const metadata: Metadata = createMetadata({
   description:
     "Open-source AI voice interview platform. Paste a job description, send candidates a link, and get back a full scorecard automatically.",
   icons: { icon: "/browser-client-icon.ico" },
-  ...(process.env.NEXT_PUBLIC_MARKETING_ENABLED &&
-    process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && {
-      verification: {
-        google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
-      },
-    }),
 })
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

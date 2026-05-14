@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: "standalone",
   reactStrictMode: true,
   reactCompiler: true,
   typedRoutes: true,
@@ -8,7 +7,7 @@ const nextConfig = {
     typedEnv: true,
   },
 
-  // pg and Neon are Node.js-only — never bundle them for the browser
+  // pg is Node.js-only — never bundle it for the browser
   serverExternalPackages: ["pg", "pg-native", "pg-pool", "pg-connection-string"],
 
   images: {
