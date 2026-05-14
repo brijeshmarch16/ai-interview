@@ -1,63 +1,35 @@
 # Contributing
 
-Thanks for contributing to AI Interview!
+Thanks for considering contributing to AI Interview!
 
-## Development
+## Opening issues
 
-### Fork this repo
+If you find a bug, please feel free to [open an issue](https://github.com/brijeshmarch16/ai-interview/issues).
 
-Click the fork button on GitHub, then clone locally:
+## Fixing bugs
 
-```bash
-git clone https://github.com/brijeshmarch16/ai-interview.git
-cd ai-interview
-```
+Here’s a quick guide:
 
-### Configure environment
+1. [Fork this repository](https://github.com/brijeshmarch16/ai-interview/fork) and then clone it locally:
 
 ```bash
-cp .env.example .env
+git clone https://github.com/brijeshmarch16/ai-interview
 ```
 
-Set the following in `.env`:
-
-| Variable | Description |
-|---|---|
-| `BETTER_AUTH_URL` | `http://localhost:3000` |
-| `BETTER_AUTH_SECRET` | Run `openssl rand -base64 32` |
-| `DATABASE_URL` | Postgres connection string |
-| `RETELL_API_KEY` | From Retell AI dashboard |
-| `OPENAI_API_KEY` | From OpenAI dashboard |
-| `NEXT_PUBLIC_MARKETING_ENABLED` | `true` to enable marketing features |
-
-### Install dependencies
+2. Create a topic branch for your changes:
 
 ```bash
-pnpm install
+git checkout -b fix-for-that-thing
 ```
 
-### Set up database
+3. If everything looks good, push to your fork:
 
 ```bash
-pnpm db:migrate && pnpm db:seed
+git push origin fix-for-that-thing
 ```
 
-### Start the app
+4. [Submit a pull request.](https://help.github.com/articles/creating-a-pull-request)
 
-```bash
-pnpm dev
-```
+## Adding new features
 
-Open http://localhost:3000.
-
-### Useful commands
-
-```bash
-pnpm lint          # lint with Biome
-pnpm check         # lint + format
-pnpm db:generate   # generate migrations from schema changes
-pnpm db:migrate    # run migrations
-pnpm db:studio     # open Drizzle Studio
-```
-
-Found a bug? [Open an issue](https://github.com/brijeshmarch16/ai-interview/issues). Want a new feature? [Start a discussion](https://github.com/brijeshmarch16/ai-interview/issues) first.
+Thinking of adding a new feature? [Open an issue](https://github.com/brijeshmarch16/ai-interview/issues) and let’s design it together.
