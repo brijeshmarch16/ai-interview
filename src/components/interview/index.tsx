@@ -194,7 +194,7 @@ export default function Call({ interview }: InterviewProps) {
 
       const emailsList = await getResponseEmailsAction(interview.id)
       const existingEmails: string[] = emailsList.map(
-        (item: { email: string }) => item.email
+        (item: { email: string | null }) => item.email ?? ""
       )
       const ineligible =
         existingEmails.includes(candidateEmail) ||

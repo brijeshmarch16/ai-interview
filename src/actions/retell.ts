@@ -11,7 +11,7 @@ import {
   SYSTEM_PROMPT,
 } from "@/lib/prompts/analytics"
 import type { Question } from "@/types/interview"
-import type { Analytics } from "@/types/response"
+import type { Analytics, CallData } from "@/types/response"
 
 const retellClient = new Retell({
   apiKey: process.env.RETELL_API_KEY || "",
@@ -32,7 +32,8 @@ const generateInterviewAnalytics = async (payload: {
       return { analytics: response.analytics as Analytics, status: 200 }
     }
 
-    const interviewTranscript = transcript || response?.details?.transcript
+    const interviewTranscript =
+      transcript || response?.details?.transcript || ""
     const questions = interview?.questions || []
     const mainInterviewQuestions = questions
       .map((q: Question, index: number) => `${index + 1}. ${q.question}`)
@@ -126,7 +127,11 @@ export const analyzeCall = async (callId: string) => {
       }
     }
 
-    const callOutput = await retellClient.call.retrieve(callId)
+    // The Retell SDK returns its own `CallResponse` shape; the app stores and
+    // consumes call data as `CallData` (the `details` column is typed as such).
+    const callOutput = (await retellClient.call.retrieve(
+      callId
+    )) as unknown as CallData
     const interviewId = callDetails?.interviewId
     callResponse = callOutput
 
@@ -136,7 +141,7 @@ export const analyzeCall = async (callId: string) => {
 
     const payload = {
       callId: callId,
-      interviewId: interviewId,
+      interviewId: interviewId ?? "",
       transcript: callResponse.transcript,
     }
 
@@ -181,7 +186,9 @@ export const getCallData = async (callId: string) => {
         },
       }
     }
-    const callResponse = await retellClient.call.retrieve(callId)
+    const callResponse = (await retellClient.call.retrieve(
+      callId
+    )) as unknown as CallData
     return {
       success: true as const,
       data: { callResponse, analytics: null },
