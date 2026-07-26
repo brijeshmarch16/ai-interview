@@ -1,5 +1,8 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![GitHub Repo Views](https://gitviews.com/repo/brijeshmarch16/ai-interview.svg?label=views&style=flat&label-color=%23555&color=%234c1)
+<p>
+  <a href="https://github.com/brijeshmarch16/ai-interview/blob/main/LICENSE"><picture><source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/github/brijeshmarch16/ai-interview/license.svg?variant=outline&amp;font=geist" /><img alt="license" src="https://shieldcn.dev/github/brijeshmarch16/ai-interview/license.svg?variant=outline&amp;mode=light&amp;font=geist" /></picture></a>
+  <a href="https://github.com/brijeshmarch16/ai-interview"><picture><source media="(prefers-color-scheme: dark)" srcset="https://www.shieldcn.dev/github/stars/brijeshmarch16/ai-interview.svg?variant=outline&amp;mode=dark&amp;font=geist"><img alt="GitHub Stars" src="https://www.shieldcn.dev/github/stars/brijeshmarch16/ai-interview.svg?variant=outline&amp;mode=light&amp;font=geist"></picture></a>
+  <a href="https://github.com/brijeshmarch16/ai-interview"><picture><source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/views/user/brijeshmarch16/repos.svg?variant=outline&amp;font=geist" /><img alt="repo views" src="https://shieldcn.dev/views/user/brijeshmarch16/repos.svg?variant=outline&amp;mode=light&amp;font=geist" /></picture></a>
+</p>
 
 # AI Interview - AI-powered voice interviewer for hiring 💼
 
